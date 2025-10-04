@@ -1,0 +1,1907 @@
+[
+  { "name": "MSCI ACWI Index", "geo": "global" },
+  {
+    "name": "MSCI World",
+    "wiki": "https://en.wikipedia.org/wiki/MSCI_World",
+    "geo": "global"
+  },
+  {
+    "name": "S&P Global 100",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Global_100",
+    "symbol": "^IOO-IV",
+    "geo": "global"
+  },
+  {
+    "name": "S&P Global 1200",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Global_1200",
+    "symbol": "^SPG1200",
+    "geo": "global"
+  },
+  {
+    "name": "The Global Dow(USD)",
+    "wiki": "https://en.wikipedia.org/wiki/The_Global_Dow",
+    "verbose": " – Global version of the Dow Jones Industrial Average",
+    "symbol": "^GDOW",
+    "geo": "global"
+  },
+  {
+    "name": "The Global Dow(EUR)",
+    "wiki": "https://en.wikipedia.org/wiki/The_Global_Dow",
+    "verbose": " – Global version of the Dow Jones Industrial Average",
+    "symbol": "^GDOWE",
+    "geo": "global"
+  },
+  {
+    "name": "Dow Jones Global Titans 50",
+    "wiki": "https://en.wikipedia.org/wiki/Dow_Jones_Global_Titans_50",
+    "symbol": "^DJGT",
+    "geo": "global"
+  },
+  {
+    "name": "Dow Jones Global Titans 50(EUR)",
+    "wiki": "https://en.wikipedia.org/wiki/Dow_Jones_Global_Titans_50",
+    "symbol": "^DJGTE",
+    "geo": "global"
+  },
+  {
+    "name": "FTSE All-World index series",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_All-World_index_series",
+    "symbol": "AW01.FGI",
+    "geo": "global"
+  },
+  {
+    "name": "OTCM QX ADR 30 Index",
+    "wiki": "https://en.wikipedia.org/wiki/OTCM_QX_ADR_30_Index",
+    "geo": "global"
+  },
+  {
+    "region": "Eafe",
+    "name": "MSCI EAFE",
+    "wiki": "https://en.wikipedia.org/wiki/MSCI_EAFE",
+    "verbose": "Europe, Australasia, and Far East",
+    "geo": "regional"
+  },
+  {
+    "region": "Eafe",
+    "name": "MSCI GCC – Gulf Cooperation countries)",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "symbol": "^N100",
+    "name": "Euronext 100 Index",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "EURO STOXX 50",
+    "symbol": "^STOXX50E",
+    "wiki": "https://en.wikipedia.org/wiki/EURO_STOXX_50",
+    "verbose": " – 50 large blue chip companies in the Eurozone",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "STOXX Europe 600",
+    "wiki": "https://en.wikipedia.org/wiki/STOXX_Europe_600",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "FTSEurofirst 300 Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSEurofirst_300_Index",
+    "verbose": " – the 300 largest companies ranked by market capitalisation in the FTSE Developed Europe Index.",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "FTSEurofirst Euro Supersector Indices",
+    "wiki": "https://en.wikipedia.org/wiki/FTSEurofirst_Euro_Supersector_Indices",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "S&P Europe 350",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Europe_350",
+    "symbol": "^SPEUP",
+    "geo": "regional"
+  },
+  {
+    "region": "Europe",
+    "name": "CECEEUR",
+    "verbose": " – Central European Clearinghouses & Exchanges Index, Composit Index in Euro. Composed of Polish Traded Index (PTX), Czech Traded Index (CTX) and Hungarian Traded Index (HTX) by the Vienna Stock Exchange.",
+    "symbol": "^CECEEUR",
+    "geo": "regional"
+  },
+  {
+    "region": "Asia",
+    "name": "S&P Asia 50",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Asia_50",
+    "symbol": "^SPASIA50",
+    "geo": "regional"
+  },
+  {
+    "region": "Latin America",
+    "name": "S&P Latin America 40",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Latin_America_40",
+    "symbol": "^SPLACNTRWM",
+    "geo": "regional"
+  },
+  {
+    "country": "Nigeria",
+    "name": "NSE All Share Index",
+    "verbose": " – Nigeria Stock Exchange All Share Index",
+    "geo": "national"
+  },
+  {
+    "country": "Nigeria",
+    "name": "NSE 30 Index",
+    "verbose": " – Nigeria Stock Exchange Top 30 Index",
+    "geo": "national"
+  },
+  {
+    "country": "South Africa",
+    "name": "JSE Limited",
+    "wiki": "https://en.wikipedia.org/wiki/JSE_Limited",
+    "verbose": "JSE – Johannesburg Stock Exchange Domestic Company Index",
+    "geo": "national"
+  },
+  {
+    "country": "Botswana",
+    "name": "BSE DCI",
+    "wiki": "https://en.wikipedia.org/wiki/BSE_DCI",
+    "verbose": " – Botswana Stock Exchange Domestic Company Index",
+    "geo": "national"
+  },
+  {
+    "country": "Botswana",
+    "name": "BSE FCI",
+    "wiki": "https://en.wikipedia.org/wiki/BSE_FCI",
+    "verbose": " – Botswana Stock Exchange Foreign Company Index",
+    "geo": "national"
+  },
+  {
+    "country": "Zambia",
+    "name": "Lusaka Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Lusaka_Stock_Exchange",
+    "verbose": "LASI – LuSE All-shares Index",
+    "geo": "national"
+  },
+  {
+    "country": "Egypt",
+    "name": "EGX 30 Index",
+    "wiki": "https://en.wikipedia.org/wiki/EGX_30_Index",
+    "symbol": "^CASE30",
+    "geo": "national"
+  },
+  {
+    "country": "Egypt",
+    "name": "EGX 50 Index",
+    "symbol": "^EGX50EWI.CA",
+    "geo": "national"
+  },
+  {
+    "country": "Egypt",
+    "name": "EGX 70 Index",
+    "symbol": "^EGX70EWI.CA",
+    "geo": "national"
+  },
+  { "country": "Egypt", "name": "EGX 100 Index", "geo": "national" },
+  {
+    "country": "Ghana",
+    "name": "GSE All-Share Index",
+    "wiki": "https://en.wikipedia.org/wiki/GSE_All-Share_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Morocco",
+    "name": "MASI index",
+    "wiki": "https://en.wikipedia.org/wiki/MASI_index",
+    "verbose": " (Moroccan All Shares Index)",
+    "geo": "national"
+  },
+  {
+    "country": "Morocco",
+    "name": "MADEX index",
+    "wiki": "https://en.wikipedia.org/wiki/MADEX_index",
+    "verbose": " (Moroccan Most Active shares Index)",
+    "geo": "national"
+  },
+  {
+    "country": "Zimbabwe",
+    "name": "Zimbabwe Industrial Index",
+    "wiki": "https://en.wikipedia.org/wiki/Zimbabwe_Industrial_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Zimbabwe",
+    "name": "Zimbabwe Industrial Index",
+    "wiki": "https://en.wikipedia.org/wiki/Zimbabwe_Industrial_Index#Zimbabwe_Mining_Index",
+    "verbose": "Zimbabwe Mining Index",
+    "geo": "national"
+  },
+  {
+    "country": "Argentina",
+    "name": "MERVAL",
+    "wiki": "https://en.wikipedia.org/wiki/MERVAL",
+    "verbose": " – 12 Companies",
+    "symbol": "^MERV",
+    "geo": "national"
+  },
+  {
+    "country": "Brazil",
+    "name": "IBOVESPA",
+    "wiki": "https://en.wikipedia.org/wiki/IBOVESPA",
+    "verbose": " – Bovespa Index",
+    "symbol": "^BVSP",
+    "geo": "national"
+  },
+  {
+    "country": "Canada",
+    "name": "S&P/TSX 60",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/TSX_60",
+    "symbol": "TX60.TS",
+    "geo": "national"
+  },
+  {
+    "country": "Canada",
+    "name": "S&P/TSX Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/TSX_Composite_Index",
+    "symbol": "^GSPTSE",
+    "geo": "national"
+  },
+  {
+    "country": "Canada",
+    "name": "S&P/TSX Venture Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/TSX_Venture_Composite_Index",
+    "symbol": "^SPCDNX",
+    "geo": "national"
+  },
+  {
+    "country": "Chile",
+    "name": "Índice de Precio Selectivo de Acciones",
+    "wiki": "https://en.wikipedia.org/wiki/%C3%8Dndice_de_Precio_Selectivo_de_Acciones",
+    "verbose": "IPSA",
+    "symbol": "^IPSA",
+    "geo": "national"
+  },
+  {
+    "country": "Colombia",
+    "name": "Indice General de la Bolsa de Valores de Colombia",
+    "wiki": "https://en.wikipedia.org/wiki/Indice_General_de_la_Bolsa_de_Valores_de_Colombia",
+    "verbose": "IGBC",
+    "geo": "national"
+  },
+  {
+    "country": "Colombia",
+    "name": "COLCAP",
+    "wiki": "https://en.wikipedia.org/wiki/COLCAP",
+    "geo": "national"
+  },
+  {
+    "country": "Jamaica",
+    "name": "Jamaica Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Jamaica_Stock_Exchange",
+    "verbose": " (JSE)",
+    "geo": "national"
+  },
+  {
+    "country": "Mexico",
+    "name": "Indice de Precios y Cotizaciones",
+    "wiki": "https://en.wikipedia.org/wiki/Indice_de_Precios_y_Cotizaciones",
+    "verbose": " (IPC) (\"Bolsa index\")",
+    "symbol": "^MXX",
+    "geo": "national"
+  },
+  {
+    "country": "Peru",
+    "name": "SPBLPGPT",
+    "wiki": "https://en.wikipedia.org/wiki/SPBLPGPT",
+    "symbol": "^SPBLPGPT",
+    "geo": "national"
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "name": "Trinidad and Tobago Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Trinidad_and_Tobago_Stock_Exchange",
+    "verbose": " (TTSE)",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "symbol": "^NYA",
+    "name": "NYSE COMPOSITE (DJ)",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "symbol": "^XAX",
+    "name": "NYSE AMEX COMPOSITE INDEX",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "NYSE Arca Major Market Index",
+    "wiki": "https://en.wikipedia.org/wiki/NYSE_Arca_Major_Market_Index",
+    "provider": "American Stock Exchange",
+    "symbol": "^XMI",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "NYSE Arca Major Market Index",
+    "wiki": "https://en.wikipedia.org/wiki/NYSE_Arca_Major_Market_Index",
+    "provider": "American Stock Exchange",
+    "symbol": "^XMI",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "industry": "Biotechnology",
+    "name": "NYSE Arca BIOTECH Index",
+    "provider": "American Stock Exchange",
+    "symbol": "^BTK",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "industry": "PHARMACEUTICAL",
+    "name": "NYSE Arca PHARMACEUTICAL Index",
+    "provider": "American Stock Exchange",
+    "symbol": "^DRG",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "industry": "NETWORKING/TELECOM",
+    "name": "NYSE Arca NETWORKING Index",
+    "provider": "American Stock Exchange",
+    "symbol": "^NWX",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "CBOE DJIA BuyWrite Index (BXD)",
+    "provider": "CBOE",
+    "symbol": "^BXD",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "CBOE NASDAQ-100 BuyWrite Index (BXN)",
+    "provider": "CBOE",
+    "symbol": "^BXN",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "CBOE NASDAQ-100 Volatility Index (VXN)",
+    "provider": "CBOE",
+    "symbol": "^VXN",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "CBOE S&P 500 BuyWrite Index",
+    "wiki": "https://en.wikipedia.org/wiki/CBOE_S%26P_500_BuyWrite_Index",
+    "verbose": " (BXM)",
+    "provider": "CBOE",
+    "symbol": "^BXM",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "CBOE Volatility Index",
+    "wiki": "https://en.wikipedia.org/wiki/CBOE_Volatility_Index",
+    "verbose": " (VIX)",
+    "provider": "CBOE",
+    "symbol": "^VIX",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Dow Jones Industrial Average",
+    "wiki": "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average",
+    "provider": "Dow Jones & Company",
+    "symbol": "^DJI",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Dow Jones Transportation Average",
+    "wiki": "https://en.wikipedia.org/wiki/Dow_Jones_Transportation_Average",
+    "provider": "Dow Jones & Company",
+    "symbol": "^DJT",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Dow Jones Utility Average",
+    "wiki": "https://en.wikipedia.org/wiki/Dow_Jones_Utility_Average",
+    "provider": "Dow Jones & Company",
+    "symbol": "^DJU",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Barron's 400 Index",
+    "wiki": "https://en.wikipedia.org/wiki/Barron%27s_400_Index",
+    "verbose": "[1]",
+    "provider": "MarketGrader (page does not exist)",
+    "symbol": "^B400",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "NASDAQ Composite",
+    "wiki": "https://en.wikipedia.org/wiki/NASDAQ_Composite",
+    "provider": "Nasdaq",
+    "symbol": "^IXIC",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "NASDAQ-100",
+    "wiki": "https://en.wikipedia.org/wiki/NASDAQ-100",
+    "provider": "Nasdaq",
+    "symbol": "^NDX",
+    "geo": "national"
+  },
+  {
+    "industry": "FINANCIALS",
+    "country": "United States",
+    "name": "NASDAQ Financial-100",
+    "wiki": "https://en.wikipedia.org/wiki/NASDAQ_Financial-100",
+    "provider": "Nasdaq",
+    "symbol": "^IXF",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell 3000 Index",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_3000_Index",
+    "verbose": "Russell 3000",
+    "provider": "Russell Indexes",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "symbol": "^RUT",
+    "name": "Russell 2000",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell 1000 Industrials 40 Act",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_1000_Index",
+    "verbose": "Russell 1000",
+    "provider": "Russell Indexes",
+    "symbol": "^RIYJC",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell Top 200 Index",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_Top_200_Index",
+    "verbose": "Russell Top 200",
+    "provider": "Russell Indexes",
+    "symbol": "^RT200TR",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell Midcap Index",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_Midcap_Index",
+    "verbose": "Russell MidCap",
+    "provider": "Russell Indexes",
+    "symbol": "^RMCC",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell 2500 Index",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_2500_Index",
+    "verbose": "Russell 2500",
+    "provider": "Russell Indexes",
+    "symbol": "^R25I",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Russell Small Cap Completeness Index",
+    "wiki": "https://en.wikipedia.org/wiki/Russell_Small_Cap_Completeness_Index",
+    "verbose": "Russell Small Cap Completeness",
+    "provider": "Russell Indexes",
+    "symbol": "^RSCC",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 500",
+    "symbol": "^GSPC",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_500",
+    "verbose": " (GSPC, INX, SPX)",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 100",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_100",
+    "provider": "Standard & Poor's",
+    "symbol": "^SP100",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 400",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_400",
+    "verbose": "S&P MidCap 400",
+    "provider": "Standard & Poor's",
+    "symbol": "^SP400",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 400",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_400",
+    "verbose": "S&P MidCap 400/BARRA Growth",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 400",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_400",
+    "verbose": "S&P MidCap 400/BARRA Value",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 600",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_600",
+    "verbose": "S&P SmallCap 600",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 600",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_600",
+    "verbose": "S&P SmallCap 600/BARRA Growth",
+    "provider": "Standard & Poor's",
+    "symbol": "^SP600",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 600",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_600",
+    "verbose": "S&P SmallCap 600/BARRA Value",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "S&P 1500",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_1500",
+    "provider": "Standard & Poor's",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Value Line Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/Value_Line_Composite_Index",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Wilshire 5000",
+    "wiki": "https://en.wikipedia.org/wiki/Wilshire_5000",
+    "provider": "Wilshire Associates",
+    "symbol": "^FTW5000",
+    "geo": "national"
+  },
+  {
+    "country": "United States",
+    "name": "Wilshire 4500",
+    "wiki": "https://en.wikipedia.org/wiki/Wilshire_4500",
+    "provider": "Wilshire Associates",
+    "symbol": "^W4500",
+    "geo": "national"
+  },
+  {
+    "country": "Venezuela",
+    "name": "Índice Bursátil Caracas",
+    "wiki": "https://en.wikipedia.org/wiki/%C3%8Dndice_Burs%C3%A1til_Caracas",
+    "verbose": " (IBC)",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Chittagong Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Chittagong_Stock_Exchange",
+    "verbose": "CSE 30",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Chittagong Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Chittagong_Stock_Exchange",
+    "verbose": "CSC X",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Chittagong Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Chittagong_Stock_Exchange",
+    "verbose": "CASPI",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Chittagong Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Chittagong_Stock_Exchange",
+    "verbose": "CSI",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Chittagong Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Chittagong_Stock_Exchange",
+    "verbose": "CSE50",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Dhaka Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Dhaka_Stock_Exchange",
+    "verbose": "DSEX",
+    "geo": "national"
+  },
+  {
+    "country": "Bangladesh",
+    "name": "Dhaka Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Dhaka_Stock_Exchange",
+    "verbose": "DSE",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SSE Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/SSE_Composite_Index",
+    "verbose": " (上证综指)",
+    "symbol": "000001.SS",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SZSE Component Index",
+    "wiki": "https://en.wikipedia.org/wiki/SZSE_Component_Index",
+    "verbose": " (深证成指)",
+    "symbol": "399001.SZ",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "CSI 300 Index",
+    "wiki": "https://en.wikipedia.org/wiki/CSI_300_Index",
+    "verbose": " (沪深300指数)",
+    "symbol": "000300.SS",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SSE 50 Index",
+    "wiki": "https://en.wikipedia.org/wiki/SSE_50_Index",
+    "verbose": " (上证50指数)",
+    "symbol": "000016.SS",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SSE 180 Index",
+    "wiki": "https://en.wikipedia.org/wiki/SSE_180_Index",
+    "verbose": " (上证180指数)",
+    "symbol": "000010.SS",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SZSE 100 Index Performance Weighted",
+    "wiki": "https://en.wikipedia.org/wiki/SZSE_100_Index",
+    "verbose": " (深证100指数)",
+    "symbol": "399656.SZ",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SZSE 200 Index",
+    "wiki": "https://en.wikipedia.org/wiki/SZSE_200_Index",
+    "verbose": " (深证200指数)",
+    "symbol": "399009.SZ",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "SZSE 300 Performance WeightedIndex",
+    "wiki": "https://en.wikipedia.org/wiki/SZSE_300_Index",
+    "verbose": " (深证300指数)",
+    "symbol": "399657.SZ",
+    "geo": "national"
+  },
+  {
+    "country": "China",
+    "name": "CSI 100 Index",
+    "wiki": "https://en.wikipedia.org/wiki/CSI_100_Index",
+    "verbose": " (中证100指数)",
+    "symbol": "000852.SS",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "BSE SENSEX",
+    "wiki": "https://en.wikipedia.org/wiki/BSE_SENSEX",
+    "symbol": "^BSESN",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY 50",
+    "wiki": "https://en.wikipedia.org/wiki/NIFTY_50",
+    "verbose": "NSE ",
+    "symbol": "NIFTY 50",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY BANK",
+    "symbol": "^NSEBANK",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "S&P BSE 500",
+    "symbol": "BSE-500.BO",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY MIDCAP 100",
+    "symbol": "NIFTY_MIDCAP_100.NS",
+    "geo": "national"
+  },
+  { "country": "India", "name": "NIFTY SMALLCAP 100", "geo": "national" },
+  {
+    "country": "India",
+    "name": "NIFTY Next 50",
+    "wiki": "https://en.wikipedia.org/wiki/NIFTY_Next_50",
+    "symbol": "^NSMIDCP",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY METAL",
+    "symbol": "^CNXMETAL",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY IT",
+    "symbol": "^CNXIT",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY 100 LOW VOLATILITY 30",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY 200",
+    "symbol": "^CNX200",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY ALPHA 50",
+    "symbol": "NIFTYALPHA50.NS",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY CPSE",
+    "symbol": "NIFTY_CPSE.NS",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY ENERGY",
+    "symbol": "^CNXENERGY",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY FIN SERVICE",
+    "symbol": "NIFTY_FIN_SERVICE.NS",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY FINSRV25 50",
+    "symbol": "^CNXFIN",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY FMCG",
+    "symbol": "^CNXFMCG",
+    "geo": "national"
+  },
+  { "country": "India", "name": "NIFTY INDIA CONSUMPTION", "geo": "national" },
+  {
+    "country": "India",
+    "name": "NIFTY INFRA",
+    "symbol": "^CNXINFRA",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY MEDIA",
+    "symbol": "^CNXMEDIA",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY MIDCAP 50",
+    "symbol": "^NSEMDCP50",
+    "geo": "national"
+  },
+  { "country": "India", "name": "NIFTY MIDCAP LIQUID 15", "geo": "national" },
+  { "country": "India", "name": "NIFTY MIDSMALLCAP 400", "geo": "national" },
+  {
+    "country": "India",
+    "name": "NIFTY MNC",
+    "symbol": "^CNXMNC",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY PHARMA",
+    "symbol": "^CNXPHARMA",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY PSE",
+    "symbol": "^CNXPSE",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY PSU BANK",
+    "symbol": "^CNXPSUBANK",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY PVT BANK",
+    "symbol": "NIFTY_PVT_BANK.NS",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY REALTY",
+    "symbol": "^CNXREALTY",
+    "geo": "national"
+  },
+  {
+    "country": "India",
+    "name": "NIFTY SERV SECTOR",
+    "symbol": "^CNXSERVICE",
+    "geo": "national"
+  },
+  { "country": "India", "name": "NIFTY SMALLCAP 250", "geo": "national" },
+  { "country": "India", "name": "NIFTY SMALLCAP 50", "geo": "national" },
+  { "country": "India", "name": "NIFTY100 EQUAL WEIGHT", "geo": "national" },
+  { "country": "India", "name": "NIFTY100 LIQUID 15", "geo": "national" },
+  { "country": "India", "name": "NIFTY200 QUALITY 30", "geo": "national" },
+  { "country": "India", "name": "NIFTY50 EQUAL WEIGHT", "geo": "national" },
+  {
+    "country": "Indonesia",
+    "name": "IDX Composite",
+    "wiki": "https://en.wikipedia.org/wiki/IDX_Composite",
+    "geo": "national"
+  },
+  {
+    "country": "Indonesia",
+    "name": "LQ-45",
+    "wiki": "https://en.wikipedia.org/wiki/LQ-45",
+    "geo": "national"
+  },
+  {
+    "country": "Indonesia",
+    "name": "Jakarta Islamic Index",
+    "wiki": "https://en.wikipedia.org/wiki/Jakarta_Islamic_Index",
+    "verbose": " (JII)",
+    "symbol": "^JKII",
+    "geo": "national"
+  },
+  { "country": "Iran", "name": "TEDPIX", "geo": "national" },
+  { "country": "Iran", "name": "TEPIX", "geo": "national" },
+  {
+    "country": "Israel",
+    "name": "TA-125 Index",
+    "wiki": "https://en.wikipedia.org/wiki/TA-125_Index",
+    "verbose": " (Tel Aviv 125)",
+    "symbol": "^TA125.TA",
+    "geo": "national"
+  },
+  {
+    "country": "Israel",
+    "name": "TA-35 Index",
+    "wiki": "https://en.wikipedia.org/wiki/TA-35_Index",
+    "verbose": " TASE's flagship index, listing TASE's 35 largest stocks by market cap, previously called the Ma'of.[3]",
+    "symbol": "TA35.TA",
+    "geo": "national"
+  },
+  {
+    "country": "Israel",
+    "name": "TA-90 Index",
+    "wiki": "https://en.wikipedia.org/wiki/TA-90_Index",
+    "verbose": "TA-90 – Stocks on TA-125 which are not included in TA-35",
+    "symbol": "TA90.TA",
+    "geo": "national"
+  },
+  {
+    "country": "Japan",
+    "name": "Nikkei 225",
+    "wiki": "https://en.wikipedia.org/wiki/Nikkei_225",
+    "symbol": "^N225",
+    "geo": "national"
+  },
+  {
+    "country": "Japan",
+    "name": "TOPIX",
+    "wiki": "https://en.wikipedia.org/wiki/TOPIX",
+    "geo": "national"
+  },
+  {
+    "country": "Jordan",
+    "name": "ASE Weighted Index",
+    "wiki": "https://en.wikipedia.org/wiki/ASE_Weighted_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Kazakhstan",
+    "name": "Kazakhstan Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Kazakhstan_Stock_Exchange",
+    "verbose": "KASE",
+    "geo": "national"
+  },
+  {
+    "country": "Malaysia",
+    "name": "Kuala Lumpur Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/Kuala_Lumpur_Composite_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Malaysia",
+    "name": "MESDAQ",
+    "wiki": "https://en.wikipedia.org/wiki/MESDAQ",
+    "geo": "national"
+  },
+  {
+    "country": "Malaysia",
+    "name": "FTSE Bursa Malaysia KLCI ",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_Bursa_Malaysia_Index",
+    "symbol": "^KLSE",
+    "geo": "national"
+  },
+  {
+    "country": "Nepal",
+    "name": "NEPSE Index",
+    "wiki": "https://en.wikipedia.org/wiki/NEPSE_Index",
+    "verbose": " – Nepal Stock Exchange",
+    "geo": "national"
+  },
+  {
+    "country": "Oman",
+    "name": "Muscat Securities Market",
+    "wiki": "https://en.wikipedia.org/wiki/Muscat_Securities_Market#Operations",
+    "verbose": "MSM-30",
+    "geo": "national"
+  },
+  {
+    "country": "Pakistan",
+    "name": "KSE 100 Index",
+    "wiki": "https://en.wikipedia.org/wiki/KSE_100_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Pakistan",
+    "name": "KSE All Share Index",
+    "wiki": "https://en.wikipedia.org/wiki/KSE_All_Share_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Pakistan",
+    "name": "KSE-30 Index",
+    "wiki": "https://en.wikipedia.org/wiki/KSE-30_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Pakistan",
+    "name": "KMI 30 Index",
+    "wiki": "https://en.wikipedia.org/wiki/KMI_30_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Philippines",
+    "name": "PSE Composite Index",
+    "wiki": "https://en.wikipedia.org/wiki/PSE_Composite_Index",
+    "verbose": "PSE Index (PSEi)",
+    "geo": "national"
+  },
+  {
+    "country": "Philippines",
+    "name": "PSE All Shares Index",
+    "wiki": "https://en.wikipedia.org/wiki/PSE_All_Shares_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Philippines",
+    "name": "PSE Financials Index",
+    "wiki": "https://en.wikipedia.org/wiki/PSE_Financials_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Philippines",
+    "name": "PSE Mining and Oil Index",
+    "wiki": "https://en.wikipedia.org/wiki/PSE_Mining_and_Oil_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Qatar",
+    "name": "Doha Securities Market",
+    "wiki": "https://en.wikipedia.org/wiki/Doha_Securities_Market#DSM-20_Stock_Index",
+    "verbose": "DSM-200",
+    "geo": "national"
+  },
+  {
+    "country": "Saudi Arabia",
+    "name": "Tadawul All Shares Index",
+    "wiki": "https://en.wikipedia.org/wiki/Tadawul",
+    "symbol": "^TASI.SR",
+    "geo": "national"
+  },
+  {
+    "country": "Singapore",
+    "name": "Straits Times Index(STI)",
+    "wiki": "https://en.wikipedia.org/wiki/Straits_Times_Index",
+    "verbose": " (STI)",
+    "symbol": "^STI",
+    "geo": "national"
+  },
+  {
+    "country": "South Korea",
+    "name": "KOSPI COMPOSITE INDEX ",
+    "wiki": "https://en.wikipedia.org/wiki/KOSPI",
+    "symbol": "^KS11",
+    "geo": "national"
+  },
+  {
+    "country": "South Korea",
+    "name": "KOSPI 200 INDEX ",
+    "wiki": "https://en.wikipedia.org/wiki/KOSPI",
+    "symbol": "^KS200",
+    "geo": "national"
+  },
+  {
+    "country": "South Korea",
+    "name": "KOSDAQ",
+    "wiki": "https://en.wikipedia.org/wiki/KOSDAQ",
+    "verbose": " – Small cap",
+    "symbol": "^KQ11",
+    "geo": "national"
+  },
+  {
+    "country": "Sri Lanka",
+    "name": "All Share Price Index",
+    "wiki": "https://en.wikipedia.org/wiki/All_Share_Price_Index",
+    "verbose": " (ASPI)",
+    "geo": "national"
+  },
+  {
+    "country": "Sri Lanka",
+    "name": "Milanka Price Index",
+    "wiki": "https://en.wikipedia.org/wiki/Milanka_Price_Index",
+    "verbose": " (MPI) – Discontinuted with effect from January 1, 2013.",
+    "geo": "national"
+  },
+  {
+    "country": "Sri Lanka",
+    "name": "Colombo Stock Exchange Sector indices",
+    "wiki": "https://en.wikipedia.org/wiki/Colombo_Stock_Exchange_Sector_indices",
+    "verbose": " (CSE Sectors)",
+    "geo": "national"
+  },
+  {
+    "country": "Taiwan",
+    "name": "Taiwan Capitalization Weighted Stock Index",
+    "wiki": "https://en.wikipedia.org/wiki/Taiwan_Capitalization_Weighted_Stock_Index",
+    "verbose": " (TAIEX)",
+    "geo": "national"
+  },
+  {
+    "country": "Taiwan",
+    "name": "TAIEX Leveraged 2X Index ",
+    "wiki": "https://en.wikipedia.org/wiki/Taiwan_Capitalization_Weighted_Stock_Index",
+    "verbose": " (TAIEX)",
+    "symbol": "TTDRL2.TW",
+    "geo": "national"
+  },
+  {
+    "country": "Thailand",
+    "name": "SET Index",
+    "wiki": "https://en.wikipedia.org/wiki/SET_Index",
+    "symbol": "^SET.BK",
+    "geo": "national"
+  },
+  {
+    "country": "Thailand",
+    "name": "SET50 Index",
+    "wiki": "https://en.wikipedia.org/wiki/SET50_Index",
+    "symbol": "^SET50.BK",
+    "geo": "national"
+  },
+  {
+    "country": "Thailand",
+    "name": "SET100 Index",
+    "wiki": "https://en.wikipedia.org/wiki/SET100_Index",
+    "symbol": "^SET100.BK",
+    "geo": "national"
+  },
+  { "country": "Vietnam", "name": "VN Index", "geo": "national" },
+  {
+    "country": "Vietnam",
+    "name": "CBV Index",
+    "wiki": "https://en.wikipedia.org/wiki/CBV_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Vietnam",
+    "name": "S&P Vietnam 10 Index",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P_Vietnam_10_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Austria",
+    "name": "Austrian Traded Index",
+    "wiki": "https://en.wikipedia.org/wiki/Austrian_Traded_Index",
+    "verbose": "ATX",
+    "symbol": "^ATX",
+    "geo": "national"
+  },
+  {
+    "country": "Belgium",
+    "symbol": "^BFX",
+    "name": "BEL 20",
+    "wiki": "https://en.wikipedia.org/wiki/BEL_20",
+    "geo": "national"
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "name": "BIRS",
+    "wiki": "https://en.wikipedia.org/wiki/BIRS",
+    "verbose": " – main market index in Republic of Srpska",
+    "geo": "national"
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "name": "FIRS (index)",
+    "wiki": "https://en.wikipedia.org/wiki/FIRS_(index)",
+    "verbose": "FIRS – investment funds index in Republic of Srpska",
+    "geo": "national"
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "name": "ERS10",
+    "wiki": "https://en.wikipedia.org/wiki/ERS10",
+    "verbose": " – power utility index in Republic of Srpska",
+    "geo": "national"
+  },
+  {
+    "country": "Bulgaria",
+    "name": "SOFIX",
+    "wiki": "https://en.wikipedia.org/wiki/SOFIX",
+    "geo": "national"
+  },
+  {
+    "country": "Croatia",
+    "name": "CROBEX",
+    "wiki": "https://en.wikipedia.org/wiki/CROBEX",
+    "geo": "national"
+  },
+  {
+    "country": "Croatia",
+    "name": "CROBIS",
+    "wiki": "https://en.wikipedia.org/wiki/CROBIS",
+    "geo": "national"
+  },
+  {
+    "country": "Czechia",
+    "name": "PX Index",
+    "wiki": "https://en.wikipedia.org/wiki/PX_Index",
+    "symbol": "FPXAA.PR",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen 20",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Copenhagen_20",
+    "verbose": " (OMXC20)",
+    "symbol": "^OMXC20",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen 25",
+    "symbol": "^OMXC25",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen 25 ESG Responsib ",
+    "symbol": "^OMXC25ESG",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen EX 20",
+    "symbol": "^OMXCXC20GI",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen Industrials PI",
+    "symbol": "^CX50PI",
+    "geo": "national"
+  },
+  {
+    "country": "Denmark",
+    "name": "OMX Copenhagen Technology PI",
+    "symbol": "^CX10PI",
+    "geo": "national"
+  },
+  {
+    "country": "Finland",
+    "name": "OMX Helsinki 25",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Helsinki_25",
+    "verbose": " (OMXH25)",
+    "symbol": "^OMXH25",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC 40",
+    "symbol": "^FCHI",
+    "wiki": "https://en.wikipedia.org/wiki/CAC_40",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC Next 20",
+    "symbol": "^CN20",
+    "wiki": "https://en.wikipedia.org/wiki/CAC_Next_20",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC Large 60",
+    "symbol": "CACLG.PA",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC Mid 60",
+    "wiki": "https://en.wikipedia.org/wiki/CAC_Mid_60",
+    "symbol": "^CM100",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC Small",
+    "wiki": "https://en.wikipedia.org/wiki/CAC_Small",
+    "symbol": "^CS90",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "SBF 120",
+    "wiki": "https://en.wikipedia.org/wiki/SBF_120",
+    "symbol": "^SBF120",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC Mid & Small",
+    "symbol": "^MS190",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC All-Tradable",
+    "wiki": "https://en.wikipedia.org/wiki/CAC_All-Tradable",
+    "symbol": "^SBF250",
+    "geo": "national"
+  },
+  {
+    "country": "France",
+    "name": "CAC All Share",
+    "symbol": "PAX.PA",
+    "geo": "national"
+  },
+  {
+    "country": "Germany",
+    "symbol": "^GDAXI",
+    "name": "DAX",
+    "wiki": "https://en.wikipedia.org/wiki/DAX",
+    "verbose": " – 30 companies weighted by the market cap",
+    "geo": "national"
+  },
+  {
+    "country": "Germany",
+    "name": "TecDAX",
+    "symbol": "^TECDAX",
+    "wiki": "https://en.wikipedia.org/wiki/TecDAX",
+    "geo": "national"
+  },
+  {
+    "country": "Germany",
+    "name": "MDAX",
+    "wiki": "https://en.wikipedia.org/wiki/MDAX",
+    "verbose": " – Mid cap",
+    "symbol": "^MDAXI",
+    "geo": "national"
+  },
+  {
+    "country": "Germany",
+    "name": "SDAX",
+    "wiki": "https://en.wikipedia.org/wiki/SDAX",
+    "verbose": " – Small cap",
+    "symbol": "^SDAXI",
+    "geo": "national"
+  },
+  {
+    "country": "Greece",
+    "name": "FTSE ATHEX Market Index",
+    "symbol": "FTSEA.AT",
+    "geo": "national"
+  },
+  {
+    "country": "Greece",
+    "name": "FTSE ATHEX INSURANCE",
+    "symbol": "DAS.AT",
+    "geo": "national"
+  },
+  {
+    "country": "Greece",
+    "name": "FTSE ATHEX MID CAP",
+    "symbol": "FTSEM.AT",
+    "geo": "national"
+  },
+  {
+    "country": "Greece",
+    "name": "ATHEX ESG Index",
+    "symbol": "ATHEX_ESG",
+    "geo": "national"
+  },
+  {
+    "country": "Greece",
+    "name": "FTSE ATHEX FINANCIAL SERVICES",
+    "symbol": "DXT.AT",
+    "geo": "national"
+  },
+  {
+    "country": "Hungary",
+    "name": "BUX",
+    "wiki": "https://en.wikipedia.org/wiki/BUX",
+    "verbose": " – Large cap",
+    "geo": "national"
+  },
+  {
+    "country": "Hungary",
+    "name": "BUMIX",
+    "wiki": "https://en.wikipedia.org/wiki/BUMIX",
+    "verbose": " – Mid cap",
+    "geo": "national"
+  },
+  {
+    "country": "Hungary",
+    "name": "Central European Blue Chip Index",
+    "wiki": "https://en.wikipedia.org/wiki/Central_European_Blue_Chip_Index",
+    "verbose": " – Regional large cap",
+    "geo": "national"
+  },
+  {
+    "country": "Iceland",
+    "name": "OMX Iceland 15",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Iceland_15",
+    "verbose": " (discontinued)",
+    "geo": "national"
+  },
+  {
+    "country": "Iceland",
+    "name": "OMX Iceland 6",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Iceland_6",
+    "geo": "national"
+  },
+  {
+    "country": "Ireland",
+    "name": "ISEQ 20",
+    "wiki": "https://en.wikipedia.org/wiki/ISEQ_20",
+    "symbol": "^IETP",
+    "geo": "national"
+  },
+  {
+    "country": "Italy",
+    "name": "FTSE MIB",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_MIB",
+    "symbol": "FTSEMIB.MI",
+    "geo": "national"
+  },
+  {
+    "country": "Italy",
+    "name": "FTSE Italia Mid Cap",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_Italia_Mid_Cap",
+    "symbol": "ITMC.MI",
+    "geo": "national"
+  },
+  {
+    "country": "Italy",
+    "name": "MIBTel",
+    "wiki": "https://en.wikipedia.org/wiki/MIBTel",
+    "geo": "national"
+  },
+  {
+    "country": "Lithuania",
+    "name": "OMX Vilnius",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Vilnius",
+    "verbose": " (OMXV)",
+    "symbol": "^OMXV",
+    "geo": "national"
+  },
+  {
+    "country": "Luxembourg",
+    "name": "LuxX Index",
+    "wiki": "https://en.wikipedia.org/wiki/LuxX_Index",
+    "verbose": " – Luxembourg Stock Exchange",
+    "geo": "national"
+  },
+  {
+    "country": "Netherlands",
+    "name": "AEX index",
+    "wiki": "https://en.wikipedia.org/wiki/AEX_index",
+    "symbol": "^AEX",
+    "geo": "national"
+  },
+  {
+    "country": "Netherlands",
+    "name": "AMX index",
+    "wiki": "https://en.wikipedia.org/wiki/AMX_index",
+    "verbose": " – Mid cap",
+    "symbol": "^AMx",
+    "geo": "national"
+  },
+  {
+    "country": "Netherlands",
+    "name": "AScX index",
+    "wiki": "https://en.wikipedia.org/wiki/AScX_index",
+    "verbose": " – Small cap",
+    "symbol": "ASCX.AS",
+    "geo": "national"
+  },
+  {
+    "country": "Norway",
+    "name": "OBX Industrials NR",
+    "wiki": "https://en.wikipedia.org/wiki/OBX_Index",
+    "symbol": "OINN.OL",
+    "geo": "national"
+  },
+  {
+    "country": "Norway",
+    "name": "OBX Industrials GR",
+    "wiki": "https://en.wikipedia.org/wiki/OBX_Index",
+    "symbol": "OING.OL",
+    "geo": "national"
+  },
+  {
+    "country": "Norway",
+    "name": "OBX Industrials PR",
+    "wiki": "https://en.wikipedia.org/wiki/OBX_Index",
+    "symbol": "OINP.OL",
+    "geo": "national"
+  },
+  {
+    "country": "Poland",
+    "name": "WIG20",
+    "wiki": "https://en.wikipedia.org/wiki/WIG",
+    "symbol": "WIG20.WA",
+    "geo": "national"
+  },
+  {
+    "country": "Poland",
+    "name": "WIGDIV",
+    "symbol": "WIGDIV.WA",
+    "geo": "national"
+  },
+  {
+    "country": "Poland",
+    "name": "WIG30",
+    "wiki": "https://en.wikipedia.org/wiki/WIG30",
+    "symbol": "WIG30.WA",
+    "geo": "national"
+  },
+  {
+    "country": "Portugal",
+    "name": "PSI-20",
+    "wiki": "https://en.wikipedia.org/wiki/PSI-20",
+    "geo": "national"
+  },
+  { "country": "Portugal", "name": "PSI-GERAL", "geo": "national" },
+  {
+    "country": "Romania",
+    "name": "BET-10",
+    "wiki": "https://en.wikipedia.org/wiki/BET-10",
+    "geo": "national"
+  },
+  {
+    "country": "Russia",
+    "name": "MICEX",
+    "wiki": "https://en.wikipedia.org/wiki/MICEX",
+    "verbose": " (Moscow Interbank Currency Exchange)",
+    "geo": "national"
+  },
+  {
+    "country": "Russia",
+    "name": "RTS Index",
+    "wiki": "https://en.wikipedia.org/wiki/RTS_Index",
+    "verbose": " (RTSI)",
+    "geo": "national"
+  },
+  {
+    "country": "Serbia",
+    "name": "BELEX15",
+    "wiki": "https://en.wikipedia.org/wiki/BELEX15",
+    "geo": "national"
+  },
+  {
+    "country": "Serbia",
+    "name": "BELEXline",
+    "wiki": "https://en.wikipedia.org/wiki/BELEXline",
+    "geo": "national"
+  },
+  {
+    "country": "Slovakia",
+    "name": "Bratislava Stock Exchange",
+    "wiki": "https://en.wikipedia.org/wiki/Bratislava_Stock_Exchange",
+    "verbose": "Slovak Share Index",
+    "geo": "national"
+  },
+  {
+    "country": "Spain",
+    "name": "IBEX 35",
+    "wiki": "https://en.wikipedia.org/wiki/IBEX_35",
+    "symbol": "^IBEX",
+    "geo": "national"
+  },
+  {
+    "country": "Spain",
+    "name": "Madrid Stock Exchange General Index",
+    "wiki": "https://en.wikipedia.org/wiki/Madrid_Stock_Exchange_General_Index",
+    "geo": "national"
+  },
+  {
+    "country": "Sweden",
+    "name": "OMX Stockholm 30",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Stockholm_30",
+    "verbose": " (OMXS30)",
+    "symbol": "^OMXS30",
+    "geo": "national"
+  },
+  {
+    "country": "Sweden",
+    "name": "OMX Stockholm PI",
+    "wiki": "https://en.wikipedia.org/wiki/OMX_Stockholm_PI",
+    "verbose": " (OMXSPI)",
+    "symbol": "^OMXSPI",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "Swiss Market Index",
+    "wiki": "https://en.wikipedia.org/wiki/Swiss_Market_Index",
+    "verbose": " (SMI)",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "SMI MID",
+    "wiki": "https://en.wikipedia.org/wiki/SMI_MID",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "SMI Expanded",
+    "wiki": "https://en.wikipedia.org/wiki/SMI_Expanded",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "Swiss Performance Index",
+    "wiki": "https://en.wikipedia.org/wiki/Swiss_Performance_Index",
+    "verbose": " (SPI)",
+    "symbol": "SPI20.SW",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "Swiss Leader Price Index",
+    "wiki": "https://en.wikipedia.org/wiki/Swiss_Leader_Index",
+    "verbose": " (SLI)",
+    "symbol": "SLI.SW",
+    "geo": "national"
+  },
+  {
+    "country": "Switzerland",
+    "name": "Swiss Leader Index TOtal Return ",
+    "verbose": " (SLI)",
+    "symbol": "SLIC.SW",
+    "geo": "national"
+  },
+  {
+    "country": "Ukraine",
+    "name": "PFTS index",
+    "wiki": "https://en.wikipedia.org/wiki/PFTS_index",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FT 30 Index",
+    "wiki": "https://en.wikipedia.org/wiki/FT_30_Index",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE 100 Index",
+    "symbol": "^FTSE",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_100_Index",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE 250 Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_250_Index",
+    "verbose": "FTSE MID 250 Index",
+    "symbol": "^FTMC",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE 350 Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_350_Index",
+    "symbol": "^FTLC",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE All-Share Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_All-Share_Index",
+    "symbol": "^FTAS",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE SmallCap Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_SmallCap_Index",
+    "symbol": "^FTSC",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE Fledgling Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_Fledgling_Index",
+    "symbol": "NSX.L",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE techMark Focus Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_techMark_Index",
+    "symbol": "^FTT1X",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE AIM All-Share Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_AIM_All-Share_Index",
+    "symbol": "^FTAI",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "name": "FTSE AIM 50 UK Index",
+    "wiki": "https://en.wikipedia.org/wiki/FTSE_AIM_UK_50_Index",
+    "symbol": "AIM5.L",
+    "geo": "national"
+  },
+  {
+    "country": "United Kingdom",
+    "symbol": "^BUK100P",
+    "name": "Cboe UK 100",
+    "geo": "national"
+  },
+  {
+    "country": "Australia",
+    "name": "All Ordinaries",
+    "wiki": "https://en.wikipedia.org/wiki/All_Ordinaries",
+    "verbose": "[4]",
+    "symbol": "^AORD",
+    "provider": "ASX",
+    "geo": "national"
+  },
+  {
+    "country": "Australia",
+    "name": "S&P/ASX 20",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/ASX_20",
+    "geo": "national"
+  },
+  {
+    "country": "Australia",
+    "name": "S&P/ASX 50",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/ASX_50",
+    "geo": "national"
+  },
+  {
+    "country": "Australia",
+    "name": "S&P/ASX 200",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/ASX_200",
+    "symbol": "^AXJO",
+    "geo": "national"
+  },
+  {
+    "country": "Australia",
+    "name": "S&P/ASX 300",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/ASX_300",
+    "symbol": "^AXKO",
+    "geo": "national"
+  },
+  {
+    "country": "New Zealand",
+    "name": "S&P/NZX 50 Index (CAPITAL INDE)",
+    "wiki": "https://en.wikipedia.org/wiki/S%26P/NZX_50_Index",
+    "symbol": "NZ50C.NZ",
+    "geo": "national"
+  },
+  {
+    "country": "New Zealand",
+    "name": "S&P/NZX 50 Index (GROSS INDE)",
+    "symbol": "^NZ50C",
+    "geo": "national"
+  },
+  {
+    "industry": "Electronics",
+    "name": "PHLX Semiconductor Sector Total",
+    "wiki": "https://en.wikipedia.org/wiki/PHLX_Semiconductor_Sector",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^XSOX",
+    "geo": "global"
+  },
+  {
+    "industry": "Electronics",
+    "name": "S&P Semiconductors Select Index",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^SPSISC",
+    "geo": "global"
+  },
+  {
+    "industry": "PHARMACEUTICAL",
+    "name": "S&P PHARMACEUTICAL Industry Select Index",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^SPSIPH",
+    "geo": "global"
+  },
+  {
+    "industry": "BANKS",
+    "name": "S&P BANKS Industry Select Index",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^SPSIBK",
+    "geo": "global"
+  },
+  {
+    "industry": "Retail",
+    "name": "S&P Retail Select Industry Index",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^SPSIRE",
+    "geo": "global"
+  },
+  {
+    "industry": "OIL/GAS",
+    "name": "S&P OIL an GAS Exploration",
+    "verbose": "[6] (companies nationality: international)",
+    "symbol": "^SPSIOP",
+    "geo": "global"
+  },
+  {
+    "industry": "Electronics",
+    "name": "TecDAX",
+    "wiki": "https://en.wikipedia.org/wiki/TecDAX",
+    "verbose": "TecDax Price Index",
+    "country": "Germany",
+    "geo": "national"
+  },
+  {
+    "industry": "Real_Estate",
+    "name": "CBV Real Estate Index",
+    "wiki": "https://en.wikipedia.org/wiki/CBV_Real_Estate_Index",
+    "country": "United States",
+    "geo": "national"
+  },
+  {
+    "industry": "Energy",
+    "name": "Amex Oil Index",
+    "wiki": "https://en.wikipedia.org/wiki/Amex_Oil_Index",
+    "verbose": " (companies nationality: international)[5]",
+    "geo": "global"
+  },
+  {
+    "industry": "Water",
+    "name": "Palisades Water Index",
+    "wiki": "https://en.wikipedia.org/wiki/Palisades_Water_Index",
+    "verbose": " (ZWI)",
+    "country": "United States",
+    "geo": "national"
+  },
+  {
+    "industry": "Metals",
+    "name": "Amex Gold BUGS Index",
+    "wiki": "https://en.wikipedia.org/wiki/Amex_Gold_BUGS_Index",
+    "verbose": " (companies nationality: US, Canada)",
+    "region": "North AMerica",
+    "countries": ["United States", "Canada"],
+    "geo": "regional"
+  },
+  {
+    "industry": "Metals",
+    "name": "Amex Gold Miner IDX",
+    "verbose": " (companies nationality: US, Canada)",
+    "region": "North AMerica",
+    "countries": ["United States", "Canada"],
+    "symbol": "^GDM",
+    "geo": "regional"
+  },
+  {
+    "industry": "Metals",
+    "name": "Philadelphia Gold and Silver Sector Total Return Index",
+    "wiki": "https://en.wikipedia.org/wiki/Philadelphia_Gold_and_Silver_Index",
+    "symbol": "^XXAU",
+    "country": "United States",
+    "geo": "national"
+  },
+  {
+    "industry": "Biotechnology",
+    "name": "S&P Biotechnology Select Indust",
+    "country": "United States",
+    "symbol": "^SPSIBI",
+    "geo": "national"
+  },
+  {
+    "industry": "Biotechnology",
+    "name": "NASDAQ Biotechnology Select Indust",
+    "country": "United States",
+    "symbol": "^NBI",
+    "geo": "national"
+  }
+]

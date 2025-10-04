@@ -1,0 +1,138 @@
+[
+  {
+    "Symbol": "ORA.PA",
+    "sectors": "Communication Services",
+    "industries": "Telecom Services"
+  },
+  {
+    "Symbol": "CA.PA",
+    "sectors": "Consumer Defensive",
+    "industries": "Grocery Stores"
+  },
+  {
+    "Symbol": "SGO.PA",
+    "sectors": "Industrials",
+    "industries": "Building Products & Equipment"
+  },
+  {
+    "Symbol": "ACA.PA",
+    "sectors": "Financial Services",
+    "industries": "Banks\u2014Regional"
+  },
+  {
+    "Symbol": "VIE.PA",
+    "sectors": "Industrials",
+    "industries": "Waste Management"
+  },
+  {
+    "Symbol": "ATO.PA",
+    "sectors": "Technology",
+    "industries": "Information Technology Services"
+  },
+  { "Symbol": "ML.PA", "sectors": "undefined", "industries": "undefined" },
+  {
+    "Symbol": "RI.PA",
+    "sectors": "Consumer Defensive",
+    "industries": "Beverages\u2014Wineries & Distilleries"
+  },
+  {
+    "Symbol": "MC.PA",
+    "sectors": "Consumer Cyclical",
+    "industries": "Luxury Goods"
+  },
+  {
+    "Symbol": "CAP.PA",
+    "sectors": "Technology",
+    "industries": "Information Technology Services"
+  },
+  {
+    "Symbol": "KER.PA",
+    "sectors": "Consumer Cyclical",
+    "industries": "Luxury Goods"
+  },
+  {
+    "Symbol": "WLN.PA",
+    "sectors": "Technology",
+    "industries": "Software\u2014Infrastructure"
+  },
+  {
+    "Symbol": "ENGI.PA",
+    "sectors": "Utilities",
+    "industries": "Utilities\u2014Diversified"
+  },
+  {
+    "Symbol": "BN.PA",
+    "sectors": "Consumer Defensive",
+    "industries": "Packaged Foods"
+  },
+  {
+    "Symbol": "AIR.PA",
+    "sectors": "Industrials",
+    "industries": "Aerospace & Defense"
+  },
+  {
+    "Symbol": "SAN.PA",
+    "sectors": "Healthcare",
+    "industries": "Drug Manufacturers\u2014General"
+  },
+  {
+    "Symbol": "VIV.PA",
+    "sectors": "Communication Services",
+    "industries": "Entertainment"
+  },
+  {
+    "Symbol": "SU.PA",
+    "sectors": "Industrials",
+    "industries": "Specialty Industrial Machinery"
+  },
+  {
+    "Symbol": "DG.PA",
+    "sectors": "Industrials",
+    "industries": "Engineering & Construction"
+  },
+  {
+    "Symbol": "LR.PA",
+    "sectors": "Industrials",
+    "industries": "Electrical Equipment & Parts"
+  },
+  {
+    "Symbol": "OR.PA",
+    "sectors": "Consumer Defensive",
+    "industries": "Household & Personal Products"
+  },
+  {
+    "Symbol": "EN.PA",
+    "sectors": "Industrials",
+    "industries": "Engineering & Construction"
+  },
+  {
+    "Symbol": "GLE.PA",
+    "sectors": "Financial Services",
+    "industries": "Banks\u2014Regional"
+  },
+  {
+    "Symbol": "AC.PA",
+    "sectors": "Consumer Cyclical",
+    "industries": "Lodging"
+  },
+  {
+    "Symbol": "SW.PA",
+    "sectors": "Industrials",
+    "industries": "Specialty Business Services"
+  },
+  {
+    "Symbol": "BNP.PA",
+    "sectors": "Financial Services",
+    "industries": "Banks\u2014Regional"
+  },
+  {
+    "Symbol": "AI.PA",
+    "sectors": "Basic Materials",
+    "industries": "Specialty Chemicals"
+  },
+  {
+    "Symbol": "HO.PA",
+    "sectors": "Industrials",
+    "industries": "Aerospace & Defense"
+  }
+]

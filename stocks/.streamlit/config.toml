@@ -1,0 +1,6 @@
+[theme]
+ base="dark"
+ primaryColor="purple"
+ backgroundColor="#0e1117"
+ textColor="#fafafa"
+ font="serif"

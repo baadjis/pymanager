@@ -1,0 +1,19 @@
+[
+ {"code":"latam",
+ "region":"Latin America"
+},
+{"code":"noram",
+ "region":"North America"
+},
+{
+    "code": "Eafe",
+    "region":"Europe, Australasia, and Far East"
+},
+{
+    "code" :"europe",
+    "region":"europe"
+
+}
+
+
+]
