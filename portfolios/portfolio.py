@@ -8,6 +8,11 @@ from scipy.optimize import minimize
 from scipy.stats import norm,linregress,skew,kurtosis
 import numpy as np
 from consts import TRADING_DAYS_PER_YEAR, TREASURY_BILL_RATE
+from typing import List, Tuple, Optional
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 #from assets import Asset
 #Optimizer=NewType("Optimizer",callable[Union[float,None],None])
 def random_weights(weight_count):
@@ -57,9 +62,31 @@ class Portfolio:
     return p
     
   @classmethod
-  def optimize_with_risk_tolerance(cls,assets,data,risk_tolerance: float,initial=100.0):
-    assert risk_tolerance >= 0.
-    return Portfolio.unsafe_optimize_with_risk_tolerance(assets,data,risk_tolerance,initial)
+  def optimize_with_risk_tolerance(cls, assets: List[str], data, 
+                                 risk_tolerance: float, initial: float = 100.0):
+    """
+    Optimize portfolio for given risk tolerance.
+    
+    Args:
+        assets: List of asset tickers
+        data: Price data DataFrame
+        risk_tolerance: Risk tolerance parameter (>= 0)
+        initial: Initial investment amount
+        
+    Returns:
+        Optimized Portfolio object
+        
+    Raises:
+        ValueError: If risk_tolerance < 0
+    """
+    if risk_tolerance < 0:
+        raise ValueError(f"Risk tolerance must be >= 0, got {risk_tolerance}")
+    
+    logger.info(f"Optimizing with risk tolerance: {risk_tolerance}")
+    return Portfolio.unsafe_optimize_with_risk_tolerance(
+        assets, data, risk_tolerance, initial
+    )
+    
   @classmethod
   def optimize_with_expected_return(cls,assets,data, expected_portfolio_return: float,initial=100.0):
     p=cls(assets,data,initial)

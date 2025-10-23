@@ -7,8 +7,8 @@ from matplotlib import rcParams
 import numpy as np
 
 from ml import ica, pca
-from .portfolio import Portfolio
-from .factory import back_period, create_benchmark, create_portfolio_by_name, generate_random_portpolios, get_unsafe_portfolios, one_asset
+from portfolio import Portfolio
+from factory import back_period, create_benchmark, create_portfolio_by_name, generate_random_portpolios, get_unsafe_portfolios, one_asset
 import pandas as pd
 from dataprovider import yahoo
 

@@ -1,0 +1,45 @@
+# .streamlit/config.toml
+# Configuration principale de Streamlit pour ΦManager
+
+[theme]
+# Theme personnalisé (sera overridé par votre système de thème dynamique)
+
+font = "sans serif"
+
+[server]
+# Configuration du serveur
+port = 8501
+enableCORS = false
+enableXsrfProtection = true
+maxUploadSize = 200
+headless = true
+
+# Auto-reload sur changement de fichier
+runOnSave = true
+allowRunOnSave = true
+
+[browser]
+# Configuration du navigateur
+gatherUsageStats = false
+serverAddress = "localhost"
+serverPort = 8501
+
+[client]
+# Configuration client
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[runner]
+# Configuration de l'exécution
+magicEnabled = true
+fastReruns = true
+
+[logger]
+# Niveau de log
+level = "info"
+messageFormat = "%(asctime)s %(levelname)s: %(message)s"
+
+[deprecation]
+# Désactiver les warnings de dépréciation
+showPyplotGlobalUse = false
+showfileUploaderEncoding = false

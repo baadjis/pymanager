@@ -7,7 +7,7 @@ from functools import lru_cache
 from typing import List
 
 import pandas as pd
-from .portfolio import Portfolio, random_weights
+from portfolio import Portfolio, random_weights
 from dataprovider import yahoo 
 back_period="8y"
 

@@ -1,5 +1,5 @@
-from portfolio import Portfolio
-from factory import back_period, create_benchmark
+from .portfolio import Portfolio
+from .factory import back_period, create_benchmark
 from rich import table,console
 
 def print_dict(dct:dict,colnames=["key","value"],title="",):

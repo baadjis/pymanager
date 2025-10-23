@@ -1,0 +1,137 @@
+/* sidebar_enhanced.css - Styles supplémentaires pour une sidebar parfaite */
+
+/* Animation smooth pour la sidebar */
+[data-testid="stSidebar"] {
+    overflow-x: hidden !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    overflow-x: hidden !important;
+}
+
+/* Masquer la scrollbar mais garder le scroll */
+[data-testid="stSidebar"]::-webkit-scrollbar {
+    width: 4px;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 2px;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.5);
+}
+
+/* Animation pour les tooltips en mode réduit */
+.nav-item-collapsed {
+    position: relative;
+}
+
+.nav-item-collapsed:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    margin-left: 8px;
+    font-size: 13px;
+    z-index: 1000;
+    animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Amélioration du footer */
+.sidebar-footer {
+    backdrop-filter: blur(10px);
+}
+
+/* Effet de hover sur l'avatar utilisateur */
+.user-avatar {
+    transition: all 0.3s ease;
+}
+
+.user-section:hover .user-avatar {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Pulse effect pour l'avatar (optionnel) */
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(99, 102, 241, 0);
+    }
+}
+
+.user-avatar.has-notification {
+    animation: pulse 2s infinite;
+}
+
+/* Badge notification (optionnel) */
+.nav-item .notification-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: #EF4444;
+    border-radius: 50%;
+    border: 2px solid var(--bg-card);
+}
+
+/* Amélioration du bouton toggle */
+.sidebar-toggle-btn {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive pour petits écrans */
+@media (max-width: 768px) {
+    [data-testid="stSidebar"] {
+        width: 80px !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
+    }
+    
+    .sidebar-phi-title,
+    .nav-label,
+    .user-info,
+    .sidebar-stats {
+        display: none !important;
+    }
+}
+
+/* Mode sombre spécifique sidebar */
+[data-theme="dark"] .sidebar-footer {
+    background: rgba(11, 15, 25, 0.95);
+}
+
+/* Mode clair spécifique sidebar */
+[data-theme="light"] .sidebar-footer {
+    background: rgba(248, 250, 252, 0.95);
+}
