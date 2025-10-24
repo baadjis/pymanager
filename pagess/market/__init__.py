@@ -6,13 +6,13 @@ Package initialization pour les pages du Portfolio Manager
 
 
 try:
-    from .stock_explorer import render_stock_explorer
+    from .stock_explorer import render_explorer
 except ImportError as e:
     print(f"Warning: Could not import stock_explorer: {e}")
     render_stock_explorer = None
 
 try:
-    from .stock_screener import render_stock_screener
+    from .screener import render_screener
 except ImportError as e:
     print(f"Warning: Could not import stock_screener: {e}")
     render_stock_screener = None
@@ -35,8 +35,8 @@ except ImportError as e:
 # Définir ce qui est exporté
 __all__ = [
     
-    'render_stock_explorer',
-    'render_stock_screener',
+    'render_explorer',
+    'render_screener',
     'render_market',
     'render_market_overview'
    
