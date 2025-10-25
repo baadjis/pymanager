@@ -13,6 +13,9 @@ from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
 from uiconfig import get_theme_colors, apply_plotly_theme, format_number
 from dataprovider import yahoo
+from database import get_watchlist
+
+user_id = st.session_state.user_id
 
 try:
     from database import get_portfolios
@@ -73,7 +76,7 @@ def render_kpi_section(theme):
     
     # Calculer les métriques
     try:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id=user_id))
         total_value = sum([p.get('amount', 0) for p in portfolios])
         num_portfolios = len(portfolios)
     except:
@@ -219,7 +222,7 @@ def render_portfolios_overview(theme):
     """)
     
     try:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id=user_id))
     except:
         portfolios = [
             {'name': 'Growth Portfolio', 'amount': 65000, 'change': 8.2, 'holdings': 12},
@@ -302,7 +305,9 @@ def render_watchlist_overview(theme):
     </div>
     """)
     
-    watchlist = st.session_state.get('watchlist', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'])
+    #watchlist = st.session_state.get('watchlist', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'])
+    #portfolios = get_portfolios(user_id=user_id)
+    watchlist = get_watchlist(user_id=user_id)
     
     if not watchlist:
         st.info("Your watchlist is empty!")

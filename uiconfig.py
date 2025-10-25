@@ -13,6 +13,7 @@ import plotly.io as pio
 def init_session_state():
     """Initialise tous les états de session"""
     defaults = {
+        'user_id': '',
         'chat_history': [],
         'tab_data': None,
         'theme': 'dark',

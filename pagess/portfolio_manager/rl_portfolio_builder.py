@@ -14,6 +14,7 @@ from .rl_portfolio import (
     train_rl_portfolio,
     evaluate_rl_agent
 )
+user_id = st.session_state.user_id
 
 
 def build_rl_portfolio(assets, data, theme):
@@ -567,6 +568,7 @@ def display_rl_results(weights, info, assets, returns_df, theme, data):
                     # Sauvegarder
                     from database import save_portfolio
                     save_portfolio(
+                        user_id=user_id
                         portfolio, 
                         name, 
                         model="rl",

@@ -17,6 +17,7 @@ from database import get_portfolios, get_single_portfolio, save_portfolio
 from uiconfig import get_theme_colors
 from .ml_rl_training import render_ml_rl_training
 # Import du module backtesting - vérifier le chemin
+user_id = st.session_state.user_id
 try:
     from backtesting import PortfolioBacktester, load_portfolio_from_csv, save_backtest_results_to_csv
 except ImportError:
@@ -906,6 +907,7 @@ def display_simple_backtest_results(results, assets, weights, portfolio_name, in
                 
                 if save_to_db:
                     save_portfolio(
+                        user_id=user_id,
                         portfolio,
                         save_name,
                         model="backtest",
@@ -1212,6 +1214,7 @@ def display_walkforward_results(results, assets, portfolio_name, initial_capital
                     portfolio.set_weights(list(final_weights))
                     
                     save_portfolio(
+                        user_id,
                         portfolio,
                         save_name,
                         model="walk_forward",
@@ -1248,7 +1251,7 @@ def render_export_results():
     """)
     
     try:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id=user_id))
         
         if not portfolios:
             st.info("No portfolios to export. Create one first!")
@@ -1258,7 +1261,7 @@ def render_export_results():
         selected = st.selectbox("Select Portfolio to Export", portfolio_names)
         
         if selected:
-            portfolio = get_single_portfolio(selected)
+            portfolio = get_single_portfolio(user_id,selected)
             
             st.markdown("---")
             st.markdown("### 📊 Portfolio Preview")

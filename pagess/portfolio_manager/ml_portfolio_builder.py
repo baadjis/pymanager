@@ -26,6 +26,8 @@ from .ml_portfolio import (
     explain_portfolio_components
 )
 
+user_id = st.session_state.user_id
+
 
 def build_ml_portfolio(assets, data, theme):
     """Build ML-based portfolio (PCA/ICA)"""

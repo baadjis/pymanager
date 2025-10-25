@@ -16,6 +16,10 @@ from .portfolio_helpers import color_column , color_background_column,cached_get
 from .portfolio_builder import  render_portfolio_build_tab,display_portfolio_results
 from .experiments_tab import render_experiments_tab
 
+
+user_id = st.session_state.user_id
+
+
 def load_enhanced_styles():
     """Charge les styles CSS personnalisés"""
     css = """
@@ -116,7 +120,7 @@ def render_portfolio_list_tab():
     st.markdown("### My Portfolios")
     
     try:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id=user_id))
         
         if not portfolios:
             st.info("No portfolios saved yet. Create one in 'Build Portfolio' tab!")
@@ -154,7 +158,7 @@ def render_portfolio_details_tab():
     st.markdown("### Portfolio Details")
     
     try:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id=user_id))
         portfolio_names = [p['name'] for p in portfolios]
         
         if not portfolio_names:
@@ -166,7 +170,7 @@ def render_portfolio_details_tab():
         if not selected:
             return
         
-        portfolio = get_single_portfolio(selected)
+        portfolio = get_single_portfolio(user_id,selected)
         assets = portfolio["assets"]
         weights = portfolio["weights"]
         amount = portfolio["amount"]

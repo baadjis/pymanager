@@ -13,7 +13,7 @@ from factory import create_portfolio_by_name
 from dataprovider import yahoo
 from database import save_portfolio
 from uiconfig import get_theme_colors
-
+user_id = st.session_state.user_id
 
 def render_portfolio_build_tab():
     """Onglet construction de portfolio"""
@@ -370,7 +370,7 @@ def display_portfolio_results(portfolio, assets, model, **kwargs):
                 st.error("❌ Please enter a portfolio name")
             else:
                 try:
-                    save_portfolio(portfolio, name, model=model, amount=amount, **kwargs)
+                    save_portfolio(user_id,portfolio, name, model=model, amount=amount, **kwargs)
                     st.success(f"✅ Portfolio '{name}' saved successfully!")
                     st.balloons()
                 except Exception as e:

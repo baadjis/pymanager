@@ -16,6 +16,7 @@ from .bl_portfolio import (
     create_sector_rotation_views
 )
 
+user_id = st.session_state.user_id
 
 def build_black_litterman_portfolio(assets, data, theme):
     """
@@ -547,6 +548,7 @@ def display_black_litterman_results(weights, info, assets, returns_df, data, the
                 
                 from database import save_portfolio
                 save_portfolio(
+                    user_id,
                     portfolio,
                     name,
                     model="black_litterman",
