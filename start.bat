@@ -1,127 +1,220 @@
-import time
-import matplotlib
-import matplotlib.pyplot as plt
-import streamlit as st
-import seaborn as sns
-from matplotlib import rcParams
-import numpy as np
+@echo off
+REM start.bat - PyManager Startup Script for Windows
+REM Starts both MCP server and Streamlit app
 
-from ml import ica, pca
-from portfolio import Portfolio
-from factory import back_period, create_benchmark, create_portfolio_by_name, generate_random_portpolios, get_unsafe_portfolios, one_asset
-import pandas as pd
-from dataprovider import yahoo
+setlocal enabledelayedexpansion
 
+REM Colors (limited in CMD but we'll use echo for clarity)
+set "INFO=[INFO]"
+set "SUCCESS=[SUCCESS]"
+set "ERROR=[ERROR]"
+set "WARNING=[WARNING]"
 
+cls
+echo ========================================
+echo    PyManager Startup
+echo ========================================
+echo.
 
-#matplotlib.use('TkAgg')
-matplotlib.use('Agg')
+REM Check Python installation
+echo %INFO% Checking Python installation...
+python --version >nul 2>&1
+if errorlevel 1 (
+    echo %ERROR% Python is not installed or not in PATH
+    echo Please install Python 3.9+ from python.org
+    pause
+    exit /b 1
+)
+for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
+echo %SUCCESS% Python %PYTHON_VERSION% found
+echo.
 
-rcParams['figure.figsize'] = 12, 9
+REM Check required files
+echo %INFO% Checking required files...
+if not exist "mcp_server.py" (
+    echo %ERROR% Missing mcp_server.py
+    pause
+    exit /b 1
+)
+if not exist "app.py" (
+    echo %ERROR% Missing app.py
+    pause
+    exit /b 1
+)
+if not exist "requirements_mcp.txt" (
+    echo %ERROR% Missing requirements_mcp.txt
+    pause
+    exit /b 1
+)
+echo %SUCCESS% All required files present
+echo.
 
+REM Check dependencies
+echo %INFO% Checking Python dependencies...
+python -c "import streamlit, fastapi, anthropic" 2>nul
+if errorlevel 1 (
+    echo %WARNING% Some dependencies missing. Installing...
+    pip install -r requirements_mcp.txt
+    if errorlevel 1 (
+        echo %ERROR% Failed to install dependencies
+        pause
+        exit /b 1
+    )
+    echo %SUCCESS% Dependencies installed
+) else (
+    echo %SUCCESS% Dependencies OK
+)
+echo.
 
-def corr_heatmap(corr):
-  
-  mask = np.triu(np.ones_like(corr, dtype=np.bool))
-  sns.heatmap(corr, 
-        xticklabels=corr.columns,
-        yticklabels=corr.columns,mask=mask, annot=True)
-  plt.show()
-
-def plot_risk_return(portfolio,col:str,label:str):
-    plt.plot(portfolio.stdev, portfolio.expected_return, col, markeredgewidth=5, markersize=20, label=label)
-
-def pair_plot(a:str,b:str,period='2y'):
+REM Check secrets file
+echo %INFO% Checking configuration...
+if not exist ".streamlit\secrets.toml" (
+    echo %WARNING% No secrets.toml found
+    echo %INFO% Creating default configuration...
     
-  data= yahoo.retrieve_data((a,b),period=period)
-  portf=Portfolio([a,b],data=data)
-  pds=portf.assets_log_returns
-  pds.plot()
-  plt.show()
-
-
-
-
-def plot_pie(stocks,weights):
-    #data=yahoo.retrieve_data(tuple(stocks),period="8y")
-    #portfolio=create_portfolio_by_name(stocks,p_name,data=data)
+    if not exist ".streamlit" mkdir ".streamlit"
     
+    (
+        echo # PyManager Configuration
+        echo # Replace with your actual API key from https://console.anthropic.com/
+        echo.
+        echo ANTHROPIC_API_KEY = "sk-ant-your-api-key-here"
+        echo MCP_SERVER_URL = "http://localhost:8000"
+    ) > ".streamlit\secrets.toml"
     
-    """plt.pie(portfolio.weights, labels=portfolio.assets, 
-    autopct='%2.2f%%', pctdistance=0.8, startangle=90)
-    """
-    sectors_weights=yahoo.get_sectors_weights(stocks,weights)
-    plt.pie(sectors_weights.values(), labels=sectors_weights.keys(), 
-    autopct='%2.2f%%', pctdistance=0.8, startangle=90)
-    plt.axis('equal')
-    plt.show()
+    echo %SUCCESS% Created .streamlit\secrets.toml
+    echo.
+    echo %WARNING% IMPORTANT: Edit .streamlit\secrets.toml and add your Anthropic API key!
+    echo.
+    pause
+)
 
-def plot(stocks,name,period=back_period,show=True): 
-  
-  benchmark=create_benchmark("SPY",period=period)
-  portfolio_data=yahoo.retrieve_data(tuple(stocks),period=period)
-  portfolio=create_portfolio_by_name(stocks,name,data=portfolio_data)
-  pds=pd.DataFrame()
-  pds["portfolio"]=portfolio.daily_returns
-  pds["benchmark"]=benchmark.daily_returns
-  pcd=pd.DataFrame(portfolio.assets_log_returns)
-  pds["pca_5"]=pca(pcd,5)
-  pds["pca_1"]=pca(pcd,1)
-  pds["ica"]=ica(pcd,1)
-  pds.plot()
-  if show:
-    plt.show()
-  else:
-      st.pyplot(fig=plt)
-  
-def do_all(stocks,portname,col:str,label:str,data):
+REM Check if ports are available
+echo %INFO% Checking port availability...
 
-   portfolio=create_portfolio_by_name(stocks,portname,data)
-   plot_risk_return(portfolio,col,label)
+REM Check port 8000
+netstat -ano | findstr ":8000" | findstr "LISTENING" >nul 2>&1
+if not errorlevel 1 (
+    echo %WARNING% Port 8000 is already in use
+    set /p KILL_8000="Kill the process and continue? (Y/N): "
+    if /i "!KILL_8000!"=="Y" (
+        for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000" ^| findstr "LISTENING"') do (
+            taskkill /F /PID %%a >nul 2>&1
+        )
+        echo %SUCCESS% Process on port 8000 killed
+    ) else (
+        echo %ERROR% Cannot start MCP server on port 8000
+        pause
+        exit /b 1
+    )
+)
 
-def draw_efficient_frontier(stocks,data):
-    # Drawing the efficient frontier
-    X ,y = get_unsafe_portfolios(stocks,data)
-    plt.plot(X, y, 'k', linewidth=3, label='Efficient frontier')
+REM Check port 8501
+netstat -ano | findstr ":8501" | findstr "LISTENING" >nul 2>&1
+if not errorlevel 1 (
+    echo %WARNING% Port 8501 is already in use
+    set /p KILL_8501="Kill the process and continue? (Y/N): "
+    if /i "!KILL_8501!"=="Y" (
+        for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8501" ^| findstr "LISTENING"') do (
+            taskkill /F /PID %%a >nul 2>&1
+        )
+        echo %SUCCESS% Process on port 8501 killed
+    ) else (
+        echo %ERROR% Cannot start Streamlit on port 8501
+        pause
+        exit /b 1
+    )
+)
 
-def draw_optimized_porfolios(stocks,data):
-    do_all(stocks,"risk0", 'm+', label='optimize_with_risk_tolerance(0)',data=data)
-    do_all(stocks,"risk", 'r+', label='optimize_with_risk_tolerance(20)',data=data)
-    do_all(stocks,"return", 'g+', label='optimize_with_expected_return(0.25)',data=data)
-    do_all(stocks,"sharp", 'y+', label='optimize_sharpe_ratio()',data=data)
+echo %SUCCESS% Ports available
+echo.
 
+REM Start MCP Server
+echo ========================================
+echo    Starting MCP Server
+echo ========================================
+echo %INFO% Starting on http://localhost:8000
+echo.
 
-def plot_random_efficient(stocks,data,random_porfolios,show=True):
-    X,y=random_porfolios
-    col=[y1/x for x ,y1 in zip(X,y) ]
+start /B python mcp_server.py > mcp_server.log 2>&1
 
-    plt.scatter(X,y, label='Random portfolios',c=col)
-    plt.colorbar(label="sharpe ratio")
+REM Wait for MCP server to start
+timeout /t 3 /nobreak >nul
 
-    # Drawing the efficient frontier
-    draw_efficient_frontier(stocks,data)
+REM Test MCP server
+curl -s http://localhost:8000/ >nul 2>&1
+if errorlevel 1 (
+    echo %ERROR% MCP server not responding
+    echo Check mcp_server.log for details
+    type mcp_server.log
+    pause
+    exit /b 1
+)
 
-    # Drawing optimized portfolios
-    draw_optimized_porfolios(stocks,data=data)
+echo %SUCCESS% MCP server running
+echo.
 
-    plt.xlabel('Portfolio standard deviation')
-    plt.ylabel('Portfolio expected (logarithmic) return')
-    plt.legend(loc='lower right')
-    if show==True:
-       plt.show()
+REM Start Streamlit App
+echo ========================================
+echo    Starting Streamlit App
+echo ========================================
+echo %INFO% Starting on http://localhost:8501
+echo.
 
+start /B streamlit run app.py > streamlit.log 2>&1
 
-def plot_markowitz_curve(stocks,n,data,show=True):
-    
-    #draw random portfolios
-    #data=retrieve_data(tuple(stocks),period=period)
-    random_portfolios=generate_random_portpolios(stocks,n,data=data)
-    plot_random_efficient(stocks,data,random_portfolios,show)
-    
+REM Wait for Streamlit to start
+timeout /t 5 /nobreak >nul
 
+echo %SUCCESS% Streamlit running
+echo.
 
-    
+REM Print status
+echo ========================================
+echo    PyManager is Running!
+echo ========================================
+echo.
+echo %SUCCESS% MCP Server: http://localhost:8000
+echo %SUCCESS% Streamlit App: http://localhost:8501
+echo.
+echo %INFO% Logs:
+echo   - MCP Server: mcp_server.log
+echo   - Streamlit: streamlit.log
+echo.
+echo %INFO% Opening browser...
+start http://localhost:8501
+echo.
 
+REM Run quick test
+echo %INFO% Running connectivity test...
+python test_mcp_integration.py --quick >nul 2>&1
+if errorlevel 1 (
+    echo %WARNING% Some tests failed, but services are running
+    echo Run: python test_mcp_integration.py for details
+) else (
+    echo %SUCCESS% All systems operational!
+)
+echo.
 
-if __name__=="__main__":
-    print("viz")
+echo ========================================
+echo    Ready to Use!
+echo ========================================
+echo.
+echo Navigate to AI Assistant page to start
+echo.
+echo Press any key to stop services and exit...
+pause >nul
+
+REM Cleanup
+echo.
+echo %INFO% Shutting down services...
+
+REM Kill Python processes running our scripts
+for /f "tokens=2" %%a in ('tasklist /FI "IMAGENAME eq python.exe" /FO LIST ^| findstr /B "PID:"') do (
+    taskkill /F /PID %%a >nul 2>&1
+)
+
+echo %SUCCESS% Services stopped
+echo.
+pause
+exit /b 0

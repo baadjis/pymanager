@@ -67,15 +67,17 @@ def apply_custom_css(theme):
         
          [data-testid="stBottomBlockContainer"] {{
             background: linear-gradient(135deg, {theme['bg_primary']} 0%, {theme['bg_secondary']} 100%) !important;
+            width: '100%';
         }}
         
         [data-testid="stMainBlockContainer"] {{
             background: linear-gradient(135deg, {theme['bg_primary']} 0%, {theme['bg_secondary']} 100%) !important;
+            
         }}
         
         [data-testid="stBottom"] {{
             background: linear-gradient(135deg, {theme['bg_primary']} 0%, {theme['bg_secondary']} 100%) !important;
-            width: '90%';
+            
         }}
         
         [data-testid="stBaseLinkButton-secondary"] {{
@@ -99,6 +101,12 @@ def apply_custom_css(theme):
         
         section[data-testid="stSidebar"] ~ * {{
             background: transparent !important;
+        }}
+        
+        .st-emotion-cache-128upt6  {{
+        
+         background: linear-gradient(135deg, {theme['bg_primary']} 0%, {theme['bg_secondary']} 100%) !important;
+        
         }}
         
          .section-title {{

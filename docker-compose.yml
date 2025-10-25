@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: pymanager-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./backups:/backups
+    networks:
+      - pymanager-network
+
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    container_name: pymanager-mcp
+    restart: unless-stopped
+    environment:
+      MONGODB_URI: mongodb://admin:${MONGO_PASSWORD}@mongodb:27017/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    networks:
+      - pymanager-network
+
+  streamlit-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pymanager-app
+    restart: unless-stopped
+    environment:
+      MONGODB_URI: mongodb://admin:${MONGO_PASSWORD}@mongodb:27017/
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      MCP_SERVER_URL: http://mcp-server:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - mongodb
+      - mcp-server
+    networks:
+      - pymanager-network
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  pymanager-network:
+    driver: bridge

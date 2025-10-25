@@ -1,0 +1,31 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Streamlit Cloud
+      env:
+        STREAMLIT_TOKEN: ${{ secrets.STREAMLIT_TOKEN }}
+      run: |
+        # Trigger deployment
+        curl -X POST https://streamlit.io/api/deploy \
+          -H "Authorization: Bearer $STREAMLIT_TOKEN" \
+          -d '{"repo": "baadjis/pymanager", "branch": "main"}'
+    
+    - name: Notify deployment
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: 'PyManager deployed to production'
+        webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      if: always()
