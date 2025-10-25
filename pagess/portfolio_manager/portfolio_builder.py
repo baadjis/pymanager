@@ -13,6 +13,7 @@ from factory import create_portfolio_by_name
 from dataprovider import yahoo
 from database import save_portfolio
 from uiconfig import get_theme_colors
+
 user_id = st.session_state.user_id
 
 def render_portfolio_build_tab():

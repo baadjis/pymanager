@@ -14,20 +14,29 @@ from typing import Dict, List, Any, Optional
 # Import depuis votre projet existant
 from uiconfig import get_theme_colors
 from dataprovider import yahoo
+from pagess.auth import render_auth
 
+user_id=''
+
+try: 
+  user_id = st.session_state.user_id
+except:
+  render_auth()
+  st.stop()
 # Import database - adapter selon votre structure
 try:
     from database import get_portfolios, get_transactions
 except ImportError:
-    def get_portfolios():
+    def get_portfolios(user_id):
         return []
-    def get_transactions():
+    def get_transactions(user_id):
         return []
 
 # Configuration
 ANTHROPIC_API_KEY = st.secrets.get("ANTHROPIC_API_KEY", "")
 MCP_SERVER_URL = st.secrets.get("MCP_SERVER_URL", "http://localhost:8000")
 USE_MCP = True  # Mettre False pour désactiver MCP
+
 
 # =============================================================================
 # MCP Integration
@@ -55,7 +64,7 @@ def execute_mcp_tool(tool_name: str, params: Dict[str, Any] = {}):
         )
         if response.status_code == 200:
             result = response.json()
-            return result.get("data") if result.get("success") else None
+            return result.get("data")
     except:
         return None
     return None
@@ -79,7 +88,7 @@ def render_ai_assistant():
         box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
     ">
         <h1 style="margin: 0; font-size: 2rem; font-weight: 700; color: white;">
-            🤖 Φ AI Assistant
+            🤖 Φ AI Assistant {user_id}
         </h1>
         <p style="margin: 0.25rem 0 0 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">
             Votre conseiller portfolio intelligent
@@ -143,7 +152,7 @@ def render_welcome_screen(theme):
     <div style="text-align: center; padding: 3rem 1rem;">
         <div style="font-size: 4rem; margin-bottom: 1rem;">🤖</div>
         <h2 style="color: {theme['text_primary']}; margin-bottom: 0.5rem;">
-            Assistant IA Φ
+            Assistant IA Φ {user_id}
         </h2>
         <p style="color: {theme['text_secondary']}; font-size: 1.1rem;">
             Posez-moi des questions sur vos investissements
@@ -195,7 +204,7 @@ def render_chat_input():
     """Zone de saisie"""
     
     if prompt := st.chat_input("Posez votre question..."):
-        process_message(prompt)
+           process_message(prompt)
 
 # =============================================================================
 # Message Processing
@@ -229,7 +238,7 @@ def handle_query(prompt: str) -> str:
     
     # Requêtes portfolio
     if any(w in prompt_lower for w in ['portfolio', 'mes actions', 'mes investissements']):
-        return handle_portfolio_query(prompt)
+        return  handle_portfolio_query(prompt)
     
     # Recherche entreprise
     elif any(w in prompt_lower for w in ['recherche', 'analyse', 'action', 'aapl', 'msft', 'tsla']):
@@ -249,19 +258,30 @@ def handle_query(prompt: str) -> str:
 
 def handle_portfolio_query(prompt: str) -> str:
     """Analyse du portfolio"""
-    
+   
     try:
         # Récupérer données via MCP ou direct
+        portfolios_data={"hi":"hi"}
         if USE_MCP:
-            portfolios_data = execute_mcp_tool("get_portfolios")
+            try:
+             portfolios_data =  execute_mcp_tool(tool_name="get_portfolios",params={"user_id":str(user_id)})
+             """portfolios = list(get_portfolios(str(user_id)))
+             portfolios_data = {
+                'portfolios': portfolios,
+                'count': len(portfolios),
+                'total_value': sum([p.get('amount', 0) for p in portfolios])
+            }"""
+            except Exception as e:
+                   return str(e)
+            
         else:
-            portfolios = list(get_portfolios())
+            portfolios = list(get_portfolios(str(user_id)))
             portfolios_data = {
                 'portfolios': portfolios,
                 'count': len(portfolios),
                 'total_value': sum([p.get('amount', 0) for p in portfolios])
             }
-        
+       
         if not portfolios_data:
             return "❌ Impossible de récupérer les données du portfolio."
         

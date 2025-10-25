@@ -42,6 +42,7 @@ is_authenticated = True if user_id!='' else False
 if not is_authenticated:
     # Pas de sidebar pour la page auth
     render_auth()
+    st.stop()
     
 else:
 # Si authentifié, afficher la sidebar et les pages
@@ -65,4 +66,4 @@ else:
     render_stock_screener()
  else:
     # Page par défaut
-    render_dashboard()
+    render_auth()

@@ -13,11 +13,11 @@ from datetime import datetime
 try:
     from database import get_portfolios, get_transactions, get_watchlist
 except:
-    def get_portfolios():
+    def get_portfolios(user_id):
         return []
-    def get_transactions():
+    def get_transactions(user_id):
         return []
-    def get_watchlist():
+    def get_watchlist(user_id):
         return []
 
 app = FastAPI(
@@ -68,12 +68,16 @@ MCP_TOOLS = [
         "input_schema": {
             "type": "object",
             "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user"
+                },
                 "portfolio_id": {
                     "type": "string",
                     "description": "The ID of the portfolio to retrieve"
                 }
             },
-            "required": ["portfolio_id"]
+            "required": ["user_id", "portfolio_id"]
         }
     },
     {
@@ -81,8 +85,13 @@ MCP_TOOLS = [
         "description": "Retrieve user's watchlist stocks",
         "input_schema": {
             "type": "object",
-            "properties": {},
-            "required": []
+            "properties": {
+             "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user"
+                }
+            },
+            "required": ["user_id"]
         }
     },
     {
@@ -91,6 +100,10 @@ MCP_TOOLS = [
         "input_schema": {
             "type": "object",
             "properties": {
+                 "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user"
+                },
                 "portfolio_id": {
                     "type": "string",
                     "description": "Filter by portfolio ID (optional)"
@@ -104,7 +117,7 @@ MCP_TOOLS = [
                     "description": "End date for transactions (YYYY-MM-DD)"
                 }
             },
-            "required": []
+            "required": ["user_id"]
         }
     },
     {
@@ -114,11 +127,15 @@ MCP_TOOLS = [
             "type": "object",
             "properties": {
                 "portfolio_id": {
+                     "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user"
+                },
                     "type": "string",
                     "description": "Portfolio ID to analyze"
                 }
             },
-            "required": ["portfolio_id"]
+            "required": ["user_id","portfolio_id"]
         }
     },
     {
@@ -127,12 +144,16 @@ MCP_TOOLS = [
         "input_schema": {
             "type": "object",
             "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user"
+                },
                 "portfolio_id": {
                     "type": "string",
                     "description": "Specific portfolio ID (optional, defaults to all)"
                 }
             },
-            "required": []
+            "required": ["user_id"]
         }
     }
 ]
@@ -166,21 +187,22 @@ async def execute_tool(request: MCPToolRequest):
     try:
         # Route to appropriate handler
         if tool_name == "get_portfolios":
-            data = handle_get_portfolios()
+            data = handle_get_portfolios(params.get("user_id"))
         elif tool_name == "get_portfolio_by_id":
-            data = handle_get_portfolio_by_id(params.get("portfolio_id"))
+            data = handle_get_portfolio_by_id(params.get("user_id"),params.get("portfolio_id"))
         elif tool_name == "get_watchlist":
-            data = handle_get_watchlist()
+            data = handle_get_watchlist(params.get("user_id"))
         elif tool_name == "get_transactions":
             data = handle_get_transactions(
+                 params.get("user_id"),
                 params.get("portfolio_id"),
                 params.get("start_date"),
                 params.get("end_date")
             )
         elif tool_name == "calculate_portfolio_metrics":
-            data = handle_calculate_metrics(params.get("portfolio_id"))
+            data = handle_calculate_metrics(params.get("user_id"),params.get("portfolio_id"))
         elif tool_name == "get_allocation_breakdown":
-            data = handle_allocation_breakdown(params.get("portfolio_id"))
+            data = handle_allocation_breakdown(params.get("user_id"),params.get("portfolio_id"))
         else:
             raise HTTPException(status_code=404, detail=f"Tool '{tool_name}' not found")
         
@@ -193,10 +215,12 @@ async def execute_tool(request: MCPToolRequest):
 # Tool Handlers
 # =============================================================================
 
-def handle_get_portfolios():
+def handle_get_portfolios(user_id):
     """Get all portfolios"""
-    portfolios = list(get_portfolios())
-    
+    portfolios = list(get_portfolios(user_id))
+    if not portfolios:
+           raise ValueError("portfolio_id is required")
+       
     total_value = sum([p.get('amount', 0) for p in portfolios])
     
     return {
@@ -210,13 +234,13 @@ def handle_get_portfolios():
         }
     }
 
-def handle_get_portfolio_by_id(portfolio_id: str):
+def handle_get_portfolio_by_id(user_id,portfolio_id: str):
     """Get specific portfolio"""
     if not portfolio_id:
         raise ValueError("portfolio_id is required")
     
-    portfolios = list(get_portfolios())
-    portfolio = next((p for p in portfolios if p.get('id') == portfolio_id), None)
+    portfolios = list(get_portfolios(user_id))
+    portfolio = next((p for p in portfolios if p.get('_id') == portfolio_id), None)
     
     if not portfolio:
         raise ValueError(f"Portfolio {portfolio_id} not found")
@@ -228,9 +252,9 @@ def handle_get_portfolio_by_id(portfolio_id: str):
         "model": portfolio.get('model', 'unknown')
     }
 
-def handle_get_watchlist():
+def handle_get_watchlist(user_id):
     """Get watchlist"""
-    watchlist = get_watchlist()
+    watchlist = get_watchlist(user_id)
     
     return {
         "watchlist": watchlist,
@@ -238,9 +262,9 @@ def handle_get_watchlist():
         "tickers": [item.get('ticker') for item in watchlist]
     }
 
-def handle_get_transactions(portfolio_id=None, start_date=None, end_date=None):
+def handle_get_transactions(user_id,portfolio_id=None, start_date=None, end_date=None):
     """Get transactions with filters"""
-    transactions = list(get_transactions())
+    transactions = list(get_transactions(user_id))
     
     # Filter by portfolio
     if portfolio_id:
@@ -270,13 +294,13 @@ def handle_get_transactions(portfolio_id=None, start_date=None, end_date=None):
         }
     }
 
-def handle_calculate_metrics(portfolio_id: str):
+def handle_calculate_metrics(user_id,portfolio_id: str):
     """Calculate portfolio metrics"""
     if not portfolio_id:
         raise ValueError("portfolio_id is required")
     
-    portfolio = handle_get_portfolio_by_id(portfolio_id)['portfolio']
-    transactions = handle_get_transactions(portfolio_id)['transactions']
+    portfolio = handle_get_portfolio_by_id(user_id,portfolio_id)['portfolio']
+    transactions = handle_get_transactions(user_id,portfolio_id)['transactions']
     
     # Calculate basic metrics
     current_value = portfolio.get('amount', 0)
@@ -301,13 +325,13 @@ def handle_calculate_metrics(portfolio_id: str):
         }
     }
 
-def handle_allocation_breakdown(portfolio_id=None):
+def handle_allocation_breakdown(user_id,portfolio_id=None):
     """Get allocation breakdown"""
     if portfolio_id:
-        portfolio = handle_get_portfolio_by_id(portfolio_id)['portfolio']
+        portfolio = handle_get_portfolio_by_id(user_id,portfolio_id)['portfolio']
         holdings = portfolio.get('holdings', [])
     else:
-        portfolios = list(get_portfolios())
+        portfolios = list(get_portfolios(user_id))
         holdings = []
         for p in portfolios:
             holdings.extend(p.get('holdings', []))

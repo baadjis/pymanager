@@ -651,7 +651,7 @@ def render_backtesting():
             selected = st.selectbox("Select Portfolio", portfolio_names, key="backtest_load_portfolio")
             
             if st.button("Load Portfolio", key="db_load"):
-                portfolio = get_single_portfolio(selected)
+                portfolio = get_single_portfolio(user_id,selected)
                 assets = portfolio['assets']
                 weights = portfolio['weights']
                 
@@ -907,7 +907,7 @@ def display_simple_backtest_results(results, assets, weights, portfolio_name, in
                 
                 if save_to_db:
                     save_portfolio(
-                        user_id=user_id,
+                        user_id,
                         portfolio,
                         save_name,
                         model="backtest",

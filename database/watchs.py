@@ -7,11 +7,11 @@ Gestion complète: Users, Portfolios, Watchlists, Alerts, Transactions
 import datetime
 from pymongo import MongoClient, ASCENDING, DESCENDING
 from pymongo.errors import DuplicateKeyError
-import logging
+
 from typing import Dict, List, Optional, Any
 from bson import ObjectId
 import hashlib
-from .database import db , watchlists_collection
+from .database import db , watchlists_collection,logger
 
 # =============================================================================
 # Watchlist Management

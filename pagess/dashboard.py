@@ -14,13 +14,19 @@ from datetime import datetime, timedelta
 from uiconfig import get_theme_colors, apply_plotly_theme, format_number
 from dataprovider import yahoo
 from database import get_watchlist
-
-user_id = st.session_state.user_id
+from .auth import render_auth
+user_id=''
+try :
+  user_id = st.session_state.user_id
+except:
+  
+  render_auth()
+  st.stop()
 
 try:
     from database import get_portfolios
 except:
-    def get_portfolios():
+    def get_portfolios(user_id):
         return []
 
 

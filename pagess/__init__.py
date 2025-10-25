@@ -12,7 +12,7 @@ except ImportError:
         st.error("Dashboard module not found")
 
 try:
-    from .portfolio import render_portfolio_manager
+    from .portfolio_manager import render_portfolio_manager
 except ImportError:
     def render_portfolio_manager():
         import streamlit as st
@@ -26,7 +26,7 @@ except ImportError:
         st.error("Market module not found")
 
 try:
-    from .ai_assistant import render_ai_assistant
+    from .ai import render_ai_assistant
 except ImportError:
     def render_ai_assistant():
         import streamlit as st
