@@ -52,10 +52,10 @@ def calculate_portfolio_current_value(portfolio_data):
             for i, q in  enumerate(quantities):
                print(q,latest_prices[i],q * latest_prices[i] )
                current_value += q * latest_prices[i] 
-            pnl = current_value - portfolio_data['amount']
-            pnl_pct = (pnl / portfolio_data['amount']) * 100
+            pnl = current_value - portfolio_data.get('total_amount',0)
+            pnl_pct = (pnl / portfolio_data.get('total_amount') )* 100
             return current_value, pnl, pnl_pct
     except:
         pass
     
-    return portfolio_data['amount'], 0, 0
+    return portfolio_data.get('total_amount'), 0, 0

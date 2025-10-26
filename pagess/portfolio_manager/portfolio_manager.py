@@ -173,7 +173,7 @@ def render_portfolio_details_tab():
         portfolio = get_single_portfolio(user_id,selected)
         assets = portfolio["assets"]
         weights = portfolio["weights"]
-        amount = portfolio["amount"]
+        amount = portfolio.get("total_amount",0)
         print(portfolio)
         data = yahoo.retrieve_data(tuple(assets), "1d")
         
