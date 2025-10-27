@@ -1,9 +1,0 @@
-cli
-database
-dataprovider
-index
-ml
-portfolios
-printer
-stocks
-viz

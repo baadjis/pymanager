@@ -342,7 +342,7 @@ async def handle_get_portfolios(params: Dict[str, Any]):
     
     try:
         portfolios = list(get_portfolios(str(user_id)))
-        total_value = sum([p.get('amount', 0) for p in portfolios])
+        total_value = sum([p.get('total_amount', 0) for p in portfolios])
         
         return {
             "portfolios": portfolios,
@@ -377,7 +377,7 @@ async def handle_get_portfolio_by_name(params: Dict[str, Any]):
             "name": portfolio.get('name'),
             "assets": portfolio.get('assets', []),
             "weights": portfolio.get('weights', []),
-            "amount": portfolio.get('amount', 0),
+            "amount": portfolio.get('total_amount', 0),
             "model": portfolio.get('model', 'unknown')
         }
     except ValueError:
@@ -402,8 +402,8 @@ async def handle_get_transactions(params: Dict[str, Any]):
             transactions = [t for t in transactions if t.get('portfolio_name') == portfolio_name]
         
         # Calculate aggregates
-        total_buy = sum([t.get('amount', 0) for t in transactions if t.get('type') == 'buy'])
-        total_sell = sum([t.get('amount', 0) for t in transactions if t.get('type') == 'sell'])
+        total_buy = sum([t.get('total_amount', 0) for t in transactions if t.get('type') == 'buy'])
+        total_sell = sum([t.get('total_amount', 0) for t in transactions if t.get('type') == 'sell'])
         
         return {
             "transactions": transactions,
@@ -454,9 +454,9 @@ async def handle_calculate_metrics(params: Dict[str, Any]):
         portfolio_transactions = [t for t in transactions if t.get('portfolio_name') == portfolio_name]
         
         # Calculate metrics
-        current_value = portfolio.get('amount', 0)
-        invested = sum([t.get('amount', 0) for t in portfolio_transactions if t.get('type') == 'buy'])
-        withdrawn = sum([t.get('amount', 0) for t in portfolio_transactions if t.get('type') == 'sell'])
+        current_value = portfolio.get('total_amount', 0)
+        invested = sum([t.get('total_amount', 0) for t in portfolio_transactions if t.get('type') == 'buy'])
+        withdrawn = sum([t.get('total_amount', 0) for t in portfolio_transactions if t.get('type') == 'sell'])
         
         cost_basis = invested - withdrawn
         total_return = current_value - cost_basis if cost_basis > 0 else 0
@@ -492,7 +492,7 @@ async def handle_allocation_breakdown(params: Dict[str, Any]):
             
             assets = portfolio.get('assets', [])
             weights = portfolio.get('weights', [])
-            amount = portfolio.get('amount', 0)
+            amount = portfolio.get('total_amount', 0)
             
             allocation = {asset: weight * amount for asset, weight in zip(assets, weights)}
         else:
@@ -503,7 +503,7 @@ async def handle_allocation_breakdown(params: Dict[str, Any]):
             for pf in portfolios:
                 assets = pf.get('assets', [])
                 weights = pf.get('weights', [])
-                amount = pf.get('amount', 0)
+                amount = pf.get('total_amount', 0)
                 
                 for asset, weight in zip(assets, weights):
                     allocation[asset] = allocation.get(asset, 0) + (weight * amount)
@@ -532,7 +532,7 @@ async def handle_save_portfolio(params: Dict[str, Any]):
     portfolio_data = params.get("portfolio_data")
     name = params.get("name")
     model = params.get("model")
-    amount = params.get("amount")
+    total_amount = params.get("amount")
     
     if not all([user_id, portfolio_data, name, model, amount]):
         raise ValueError("Missing required parameters")
@@ -545,7 +545,7 @@ async def handle_save_portfolio(params: Dict[str, Any]):
             portfolio_data,
             name,
             model,
-            amount
+            total_amount
         )
         
         return {

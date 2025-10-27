@@ -83,7 +83,7 @@ def render_kpi_section(theme):
     # Calculer les métriques
     try:
         portfolios = list(get_portfolios(user_id=user_id))
-        total_value = sum([p.get('amount', 0) for p in portfolios])
+        total_value = sum([p.get('total_amount', 0) for p in portfolios])
         num_portfolios = len(portfolios)
     except:
         total_value = 125430.50
@@ -250,7 +250,7 @@ def render_portfolios_overview(theme):
     
     for idx, portfolio in enumerate(portfolios[:5]):
         name = portfolio.get('name', f'Portfolio {idx+1}')
-        value = portfolio.get('amount', 0)
+        value = portfolio.get('total_amount', 0)
         change = portfolio.get('change', 0)
         holdings = portfolio.get('holdings', 0)
         

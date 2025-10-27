@@ -1,13 +1,11 @@
 # pagess/ai_assistant.py
 """
-AI Assistant - Version Enrichie
-Architecture complète:
-- MCP pour données internes
-- Claude AI pour analyses
-- Yahoo Finance pour données de marché
-- RAG pour documents locaux
-- Web Search (DuckDuckGo + Wikipedia)
-- FRED pour données économiques
+AI Assistant - Version Finale Complète
+Architecture:
+- MCP pour données internes (portfolios, transactions, watchlist)
+- Claude AI + Yahoo Finance pour recherche d'entreprises
+- Web search pour trouver tickers
+- Knowledge base + web pour éducation
 """
 
 import streamlit as st
@@ -17,26 +15,14 @@ import requests
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 import re
-import sys
-from pathlib import Path
-
-# Add knowledge module to path
-sys.path.append(str(Path(__file__).parent.parent))
+import pandas as pd
+import numpy as np
 
 # Imports du projet
 from uiconfig import get_theme_colors
 from dataprovider import yahoo
 from pagess.auth import render_auth
-
-# Imports knowledge
-try:
-    from knowledge.rag_engine import SimpleRAG
-    from knowledge.web_search import WebSearchEngine
-    from knowledge.fed_data import FREDDataProvider
-    KNOWLEDGE_ENHANCED = True
-except ImportError:
-    KNOWLEDGE_ENHANCED = False
-    st.warning("⚠️ Knowledge modules not available. Install: pip install duckduckgo-search wikipedia-api fredapi sentence-transformers")
+from portfolio import Portfolio, get_log_returns
 
 # Vérification user
 try: 
@@ -49,45 +35,9 @@ except:
 ANTHROPIC_API_KEY = st.secrets.get("ANTHROPIC_API_KEY", "")
 MCP_SERVER_URL = st.secrets.get("MCP_SERVER_URL", "http://localhost:8000")
 USE_MCP = st.secrets.get("USE_MCP", True)
-FRED_API_KEY = st.secrets.get("FRED_API_KEY", "")
-
-# Initialize knowledge engines (lazy loading)
-_rag_engine = None
-_web_search = None
-_fed_data = None
-
-def get_rag_engine():
-    """Lazy load RAG engine"""
-    global _rag_engine
-    if _rag_engine is None and KNOWLEDGE_ENHANCED:
-        try:
-            _rag_engine = SimpleRAG()
-        except Exception as e:
-            st.error(f"Failed to load RAG: {e}")
-    return _rag_engine
-
-def get_web_search():
-    """Lazy load web search"""
-    global _web_search
-    if _web_search is None and KNOWLEDGE_ENHANCED:
-        try:
-            _web_search = WebSearchEngine()
-        except Exception as e:
-            st.error(f"Failed to load web search: {e}")
-    return _web_search
-
-def get_fed_data():
-    """Lazy load FRED data"""
-    global _fed_data
-    if _fed_data is None and KNOWLEDGE_ENHANCED and FRED_API_KEY:
-        try:
-            _fed_data = FREDDataProvider(FRED_API_KEY)
-        except Exception as e:
-            st.error(f"Failed to load FRED: {e}")
-    return _fed_data
 
 # =============================================================================
-# KNOWLEDGE BASE (Hardcodé - Fallback)
+# KNOWLEDGE BASE - Éducation financière
 # =============================================================================
 
 KNOWLEDGE_BASE = {
@@ -96,7 +46,7 @@ KNOWLEDGE_BASE = {
         "content": """📊 **Ratio de Sharpe**
 
 **Définition:**
-Le ratio de Sharpe mesure le rendement ajusté au risque.
+Le ratio de Sharpe mesure le rendement ajusté au risque. Il indique combien de rendement vous obtenez par unité de risque prise.
 
 **Formule:**
 ```
@@ -107,7 +57,33 @@ Ratio de Sharpe = (Rendement - Taux sans risque) / Écart-type
 - **> 2.0** : Excellent ⭐⭐⭐
 - **1.0-2.0** : Très bon ⭐⭐
 - **0.5-1.0** : Acceptable ⭐
-- **< 0.5** : Faible ❌"""
+- **< 0.5** : Faible ❌
+
+**Exemple:**
+Portfolio A: 15% rendement, 10% volatilité → Sharpe = 1.3 ⭐⭐
+Portfolio B: 20% rendement, 25% volatilité → Sharpe = 0.72 ⭐
+
+→ Portfolio A a un meilleur rendement ajusté au risque!"""
+    },
+    
+    "pe_ratio": {
+        "title": "Ratio P/E",
+        "content": """💰 **Ratio P/E (Price-to-Earnings)**
+
+**Définition:**
+Le P/E mesure le prix que vous payez pour chaque dollar de bénéfice.
+
+**Formule:**
+```
+P/E = Prix de l'action / Bénéfice par action
+```
+
+**Interprétation:**
+- **P/E < 15** : Sous-évalué 🟢
+- **P/E 15-25** : Valorisation normale 🟡
+- **P/E > 25** : Potentiellement cher 🔴
+
+**Attention:** P/E élevé peut indiquer forte croissance attendue. Comparez avec le secteur!"""
     },
     
     "diversification": {
@@ -119,16 +95,156 @@ Ratio de Sharpe = (Rendement - Taux sans risque) / Écart-type
 **Pourquoi?**
 - 📉 Réduit le risque global
 - 📊 Lisse les rendements
-- 🛡️ Protection contre les chocs"""
+- 🛡️ Protection contre les chocs
+
+**Comment diversifier:**
+1. **Par classes d'actifs:** Actions 60%, Obligations 30%, Cash 10%
+2. **Par secteurs:** Tech, Santé, Finance (aucun > 25%)
+3. **Par géographie:** US 60%, International 30%, Émergents 10%
+
+**💡 Règle:** 15-30 actions offrent ~90% des bénéfices de diversification"""
     },
     
     "markowitz": {
         "title": "Théorie de Markowitz",
         "content": """📊 **Théorie Moderne du Portfolio (Markowitz)**
 
-Développée par Harry Markowitz en 1952, optimise le ratio risque/rendement."""
+**Concept clé:** Optimiser le ratio risque/rendement
+
+**Frontière efficiente:**
+Ensemble des portfolios offrant le meilleur rendement pour un niveau de risque donné.
+
+**3 stratégies:**
+1. **Max Sharpe:** Meilleur rendement ajusté au risque
+2. **Min Risk:** Volatilité minimale
+3. **Max Return:** Rendement maximal (plus risqué)
+
+**Dans PyManager:** Utilisez le Portfolio Builder > Markowitz"""
+    },
+    
+    "black_litterman": {
+        "title": "Modèle Black-Litterman",
+        "content": """🎯 **Black-Litterman Model**
+
+**Avantage sur Markowitz:**
+Intègre vos convictions personnelles (views) sur le marché.
+
+**Comment ça marche:**
+1. Commence avec l'équilibre de marché
+2. Ajoute vos vues (ex: "Apple va surperformer de 5%")
+3. Combine les deux pour des poids optimaux
+
+**Dans PyManager:** Portfolio Builder > BL (Black-Litterman)
+
+**Cas d'usage:** Quand vous avez des insights spécifiques sur certaines actions."""
     }
 }
+
+# =============================================================================
+# MCP Functions
+# =============================================================================
+
+def check_mcp_connection() -> bool:
+    """Vérifie la connexion au serveur MCP"""
+    if not USE_MCP:
+        return False
+    try:
+        response = requests.get(f"{MCP_SERVER_URL}/health", timeout=2)
+        return response.status_code == 200
+    except:
+        return False
+
+def execute_mcp_tool(tool_name: str, params: Dict[str, Any], require_confirmation: bool = False) -> Optional[Any]:
+    """
+    Exécute un outil MCP
+    - GET operations: pas de confirmation
+    - WRITE operations: avec confirmation si require_confirmation=True
+    """
+    if not USE_MCP:
+        st.warning("⚠️ MCP Server désactivé. Activez-le dans secrets.toml")
+        return None
+    
+    try:
+        # Afficher l'action si confirmation requise
+        if require_confirmation:
+            with st.expander("🔧 Action MCP", expanded=True):
+                st.write(f"**Outil:** `{tool_name}`")
+                st.json(params)
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    if not st.button("✅ Exécuter", key=f"mcp_exec_{tool_name}_{hash(str(params))}"):
+                        st.info("⏳ En attente de votre confirmation...")
+                        st.stop()
+                with col2:
+                    if st.button("❌ Annuler", key=f"mcp_cancel_{tool_name}_{hash(str(params))}"):
+                        return None
+        
+        # Exécuter
+        response = requests.post(
+            f"{MCP_SERVER_URL}/execute",
+            json={
+                "tool": tool_name,
+                "params": params,
+                "require_approval": False  # On gère la confirmation côté Streamlit
+            },
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            if result.get("success"):
+                return result.get("data")
+            else:
+                st.error(f"❌ Erreur MCP: {result.get('error')}")
+                return None
+        else:
+            st.error(f"❌ Erreur HTTP {response.status_code}")
+            return None
+            
+    except Exception as e:
+        st.error(f"❌ Erreur MCP: {str(e)}")
+        return None
+
+# =============================================================================
+# Ticker Search avec Web
+# =============================================================================
+
+def search_ticker_from_name(company_name: str) -> Optional[str]:
+    """
+    Recherche un ticker à partir du nom d'entreprise
+    Utilise yfinance pour la recherche
+    """
+    try:
+        import yfinance as yf
+        
+        # Essayer recherche directe
+        ticker_obj = yf.Ticker(company_name)
+        info = ticker_obj.info
+        
+        if info and 'symbol' in info and info.get('symbol'):
+            return info['symbol']
+        
+        # Essayer variations
+        variations = [
+            company_name.upper(),
+            company_name.replace(' ', ''),
+            company_name.split()[0] if ' ' in company_name else company_name
+        ]
+        
+        for variant in variations:
+            try:
+                ticker_obj = yf.Ticker(variant)
+                info = ticker_obj.info
+                if info and 'symbol' in info and info.get('symbol'):
+                    return info['symbol']
+            except:
+                continue
+                
+    except Exception as e:
+        st.error(f"Erreur recherche: {e}")
+    
+    return None
 
 def extract_ticker_from_prompt(prompt: str) -> Optional[str]:
     """Extrait un ticker du texte"""
@@ -175,172 +291,6 @@ def extract_ticker_from_prompt(prompt: str) -> Optional[str]:
     return None
 
 # =============================================================================
-
-# =============================================================================
-# MCP Functions
-# =============================================================================
-
-def check_mcp_connection() -> bool:
-    """Vérifie la connexion au serveur MCP"""
-    if not USE_MCP:
-        return False
-    try:
-        response = requests.get(f"{MCP_SERVER_URL}/health", timeout=2)
-        return response.status_code == 200
-    except:
-        return False
-
-def execute_mcp_tool(tool_name: str, params: Dict[str, Any], require_confirmation: bool = False) -> Optional[Any]:
-    """Exécute un outil MCP"""
-    if not USE_MCP:
-        return None
-    
-    try:
-        if require_confirmation:
-            with st.expander("🔧 Action MCP", expanded=True):
-                st.write(f"**Outil:** `{tool_name}`")
-                st.json(params)
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    if not st.button("✅ Exécuter", key=f"mcp_exec_{tool_name}_{hash(str(params))}"):
-                        st.info("⏳ En attente de confirmation...")
-                        st.stop()
-                with col2:
-                    if st.button("❌ Annuler", key=f"mcp_cancel_{tool_name}_{hash(str(params))}"):
-                        return None
-        
-        response = requests.post(
-            f"{MCP_SERVER_URL}/execute",
-            json={"tool": tool_name, "params": params},
-            timeout=30
-        )
-        
-        if response.status_code == 200:
-            result = response.json()
-            if result.get("success"):
-                return result.get("data")
-        return None
-            
-    except Exception as e:
-        st.error(f"❌ Erreur MCP: {str(e)}")
-        return None
-
-# =============================================================================
-# Enhanced Knowledge Search
-# =============================================================================
-
-def search_knowledge(query: str) -> str:
-    """
-    Pipeline de recherche intelligent:
-    1. Knowledge Base (hardcodé) - Instantané
-    2. RAG (documents locaux) - Rapide
-    3. Web Search (DuckDuckGo + Wikipedia) - Moyen
-    4. Synthèse avec Claude - Final
-    """
-    
-    # 1. Chercher dans KB hardcodée
-    for key, content in KNOWLEDGE_BASE.items():
-        if key in query.lower() or content['title'].lower() in query.lower():
-            st.info("📚 Trouvé dans la knowledge base locale")
-            return content['content']
-    
-    # 2. Chercher dans RAG
-    rag = get_rag_engine()
-    if rag:
-        rag_results = rag.search(query, top_k=3, min_score=0.4)
-        if rag_results:
-            st.info(f"📄 Trouvé {len(rag_results)} document(s) pertinent(s) dans RAG")
-            
-            context = "\n\n".join([
-                f"**Source: {r['metadata'].get('title', 'Document')}**\n{r['text']}"
-                for r in rag_results
-            ])
-            
-            # Synthétiser avec Claude
-            if ANTHROPIC_API_KEY:
-                return synthesize_with_claude(query, context, source="RAG")
-            else:
-                return f"📄 **Documents trouvés:**\n\n{context}"
-    
-    # 3. Web Search
-    if KNOWLEDGE_ENHANCED:
-        web_search = get_web_search()
-        if web_search:
-            st.info("🌐 Recherche sur le web...")
-            
-            web_results = web_search.search(query, sources=['all'], max_results=3)
-            
-            # Construire contexte
-            context = ""
-            
-            # Wikipedia
-            if 'wikipedia' in web_results['sources']:
-                wiki = web_results['sources']['wikipedia']
-                if wiki.get('found'):
-                    context += f"**Wikipedia: {wiki['title']}**\n\n{wiki['summary']}\n\n"
-            
-            # DuckDuckGo
-            if 'duckduckgo' in web_results['sources']:
-                ddg = web_results['sources']['duckduckgo']
-                if ddg.get('results'):
-                    for r in ddg['results'][:2]:
-                        context += f"**{r['title']}**\n{r['snippet']}\n\n"
-            
-            if context:
-                # Synthétiser avec Claude
-                if ANTHROPIC_API_KEY:
-                    return synthesize_with_claude(query, context, source="Web")
-                else:
-                    return f"🌐 **Résultats Web:**\n\n{context}"
-    
-    # 4. Fallback
-    return f"""❓ **Aucune information trouvée pour: {query}**
-
-**Suggestions:**
-- Reformulez votre question
-- Utilisez des termes plus spécifiques
-- Consultez la documentation en ligne
-
-💡 Configurez ANTHROPIC_API_KEY pour des réponses enrichies par IA!"""
-
-def synthesize_with_claude(query: str, context: str, source: str = "Unknown") -> str:
-    """Synthétise les informations avec Claude"""
-    try:
-        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-        
-        response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
-            max_tokens=1500,
-            messages=[{
-                "role": "user",
-                "content": f"""Contexte trouvé ({source}):
-{context}
-
-Question: {query}
-
-Synthétise ces informations de manière pédagogique et actionnable.
-Utilise des emojis et des exemples pratiques."""
-            }]
-        )
-        
-        return f"🤖 **Réponse enrichie** (source: {source})\n\n" + response.content[0].text
-    
-    except Exception as e:
-        return f"⚠️ Erreur synthèse: {str(e)}\n\n**Contexte brut:**\n{context}"
-
-# =============================================================================
-# Economic Context
-# =============================================================================
-
-def get_economic_context() -> str:
-    """Récupère le contexte économique via FRED"""
-    fed = get_fed_data()
-    if fed and fed.fred:
-        return fed.format_economic_context()
-    return ""
-
-# =============================================================================
 # Main UI
 # =============================================================================
 
@@ -358,10 +308,10 @@ def render_ai_assistant():
         box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
     ">
         <h1 style="margin: 0; font-size: 2rem; font-weight: 700; color: white;">
-            🤖 Φ AI Assistant Enriched
+            🤖 Φ AI Assistant
         </h1>
         <p style="margin: 0.25rem 0 0 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.9);">
-            RAG + Web Search + Economic Data
+            Votre conseiller portfolio intelligent
         </p>
     </div>
     """)
@@ -384,26 +334,7 @@ def render_ai_assistant():
         
         claude_icon = "🟢" if ANTHROPIC_API_KEY else "🔴"
         st.markdown(f"**Claude AI:** {claude_icon} {'Ready' if ANTHROPIC_API_KEY else 'No API Key'}")
-        
-        # Knowledge status
-        st.markdown("**Knowledge Enhanced:**")
-        if KNOWLEDGE_ENHANCED:
-            rag = get_rag_engine()
-            if rag:
-                stats = rag.get_stats()
-                st.markdown(f"- 📚 RAG: 🟢 {stats['total_documents']} docs")
-            else:
-                st.markdown("- 📚 RAG: 🔴 Error")
-            
-            st.markdown("- 🌐 Web Search: 🟢 Active")
-            
-            fed = get_fed_data()
-            if fed and fed.fred:
-                st.markdown("- 📊 FRED: 🟢 Connected")
-            else:
-                st.markdown("- 📊 FRED: 🔴 No API Key")
-        else:
-            st.markdown("- ⚠️ Not installed")
+        st.markdown("**Yahoo Finance:** 🟢 Active")
         
         st.divider()
         
@@ -422,26 +353,6 @@ def render_ai_assistant():
         render_chat_history()
     
     render_chat_input()
-
-# ... (Les fonctions render_welcome_screen, render_chat_history, render_chat_input restent identiques)
-# ... (Les fonctions handle_portfolio_query, handle_research_query restent identiques)
-
-def handle_education_query(prompt: str) -> str:
-    """Questions éducatives avec recherche enrichie"""
-    
-    # Ajout contexte économique si pertinent
-    economic_context = ""
-    if any(w in prompt.lower() for w in ['économie', 'fed', 'inflation', 'taux', 'récession']):
-        economic_context = "\n\n" + get_economic_context()
-    
-    # Recherche enrichie
-    result = search_knowledge(prompt)
-    
-    return result + economic_context
-
-# Import des autres fonctions depuis la version précédente
-# (handle_portfolio_query, handle_create_portfolio, handle_research_query, etc.)
-
 
 def render_welcome_screen(theme):
     """Écran d'accueil"""
@@ -610,7 +521,7 @@ Sois actionnable et utilise des emojis!"""
         
         for idx, pf in enumerate(portfolios, 1):
             name = pf.get('name', f'Portfolio {idx}')
-            value = pf.get('total_amount', 0)
+            value = pf.get('amount', 0)
             model = pf.get('model', 'N/A')
             
             response += f"**{idx}. {name}**\n- Valeur: ${value:,.2f}\n- Modèle: {model.title()}\n\n"
@@ -698,35 +609,6 @@ Répondez "Oui, sauvegarde-le sous le nom [NOM]" """
         
     except Exception as e:
         return f"❌ Erreur lors de la création: {str(e)}"
-def handle_comparison_query(prompt: str) -> str:
-    """Compare plusieurs actions"""
-    return """📊 **Comparaison d'actions**
-
-**Pour comparer:**
-Précisez 2-3 entreprises
-
-**Exemples:**
-- "Compare Apple et Microsoft"
-- "Tesla vs Ford"
-- "GOOGL versus META"
-
-🚧 Fonctionnalité en cours de développement..."""
-
-def handle_backtesting_query(prompt: str) -> str:
-    """Backtesting de portfolio"""
-    return """⏮️ **Backtesting de Portfolio**
-
-**Pour tester:**
-1. Allez dans Portfolio Manager
-2. Onglet "Experiments"
-3. Sélectionnez votre portfolio
-4. Lancez le backtesting
-
-Ou utilisez:
-"Test mon portfolio [NOM] sur 2 ans"
-
-🚧 Intégration IA en cours..."""     
-
 
 def handle_research_query(prompt: str) -> str:
     """Recherche d'entreprise avec Yahoo Finance"""
@@ -815,7 +697,76 @@ Sois précis et actionnable!"""
         
     except Exception as e:
         return f"❌ Erreur: {str(e)}"
+
+def handle_comparison_query(prompt: str) -> str:
+    """Compare plusieurs actions"""
+    return """📊 **Comparaison d'actions**
+
+**Pour comparer:**
+Précisez 2-3 entreprises
+
+**Exemples:**
+- "Compare Apple et Microsoft"
+- "Tesla vs Ford"
+- "GOOGL versus META"
+
+🚧 Fonctionnalité en cours de développement..."""
+
+def handle_backtesting_query(prompt: str) -> str:
+    """Backtesting de portfolio"""
+    return """⏮️ **Backtesting de Portfolio**
+
+**Pour tester:**
+1. Allez dans Portfolio Manager
+2. Onglet "Experiments"
+3. Sélectionnez votre portfolio
+4. Lancez le backtesting
+
+Ou utilisez:
+"Test mon portfolio [NOM] sur 2 ans"
+
+🚧 Intégration IA en cours..."""
+
+def handle_education_query(prompt: str) -> str:
+    """Questions éducatives avec knowledge base"""
+    prompt_lower = prompt.lower()
     
+    # Chercher dans la knowledge base
+    for key, content in KNOWLEDGE_BASE.items():
+        if key in prompt_lower or content['title'].lower() in prompt_lower:
+            return content['content']
+    
+    # Si pas trouvé et Claude disponible
+    if ANTHROPIC_API_KEY:
+        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+        
+        response = client.messages.create(
+            model="claude-sonnet-4-5-20250929",
+            max_tokens=1500,
+            messages=[{
+                "role": "user",
+                "content": f"""Tu es un professeur de finance. Explique de manière pédagogique et concise: {prompt}
+
+Utilise des emojis et des exemples pratiques."""
+            }]
+        )
+        
+        return response.content[0].text
+    
+    # Liste des sujets disponibles
+    return f"""🎓 **Centre d'Éducation Financière**
+
+**Sujets disponibles:**
+
+{chr(10).join([f'- {content["title"]}' for content in KNOWLEDGE_BASE.values()])}
+
+**Demandez:**
+- "Explique-moi le ratio de Sharpe"
+- "Qu'est-ce que la diversification?"
+- "Comment fonctionne Black-Litterman?"
+
+💡 Configurez Claude AI pour plus de sujets!"""
+
 def handle_general_query(prompt: str) -> str:
     """Requêtes générales"""
     if not ANTHROPIC_API_KEY:
@@ -861,10 +812,10 @@ Sois précis, actionnable et utilise des emojis pour rendre tes réponses engage
         
     except Exception as e:
         return f"⚠️ Erreur: {str(e)}"
-        
-        
-    
-        
+
+# =============================================================================
+# Entry Point
+# =============================================================================
 
 if __name__ == "__main__":
     render_ai_assistant()
