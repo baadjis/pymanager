@@ -15,7 +15,8 @@ from pagess import (
     render_stock_explorer,
     render_stock_screener,
     render_ai_assistant,
-    render_market
+    render_market,
+    render_pricing_page
 )
 
 # Import de la page auth
@@ -64,6 +65,8 @@ else:
     render_stock_explorer()
  elif page == "Stock Screener":
     render_stock_screener()
+ elif page=="Pricing":
+      render_pricing_page()
  else:
     # Page par défaut
     render_auth()

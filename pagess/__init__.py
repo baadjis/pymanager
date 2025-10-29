@@ -48,6 +48,7 @@ except ImportError:
 
 # Auth page (obligatoire)
 from .auth import render_auth
+from .pricing import render_pricing_page
 
 __all__ = [
     'render_dashboard',
@@ -56,5 +57,6 @@ __all__ = [
     'render_ai_assistant',
     'render_stock_explorer',
     'render_stock_screener',
-    'render_auth'
+    'render_auth',
+    'render_pricing_page'
 ]

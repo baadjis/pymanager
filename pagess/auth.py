@@ -1,21 +1,32 @@
 # pagess/auth.py
 """
 Page d'authentification - Login et Register
-Design moderne avec validation
+Support pour licensing (student/academic auto-detection)
 """
 
 import streamlit as st
 from uiconfig import get_theme_colors
 import re
-from database import create_user, authenticate_user, get_user
+import time
 
+# Import des fonctions database
+try:
+    from database.user import (
+        create_user, 
+        authenticate_user, 
+        get_user,
+        is_educational_email,
+        verify_student
+    )
+except:
+    from database import create_user, authenticate_user, get_user
 
 def render_auth():
     """Page principale d'authentification"""
     theme = get_theme_colors()
     
     # Si déjà connecté, rediriger vers dashboard
-    if 'user_id' in st.session_state and st.session_state.user_id != '':
+    if st.session_state.get('user_id'):
         st.session_state.current_page = 'Dashboard'
         st.rerun()
     
@@ -23,7 +34,7 @@ def render_auth():
     if 'auth_tab' not in st.session_state:
         st.session_state.auth_tab = 'login'
     
-    # CSS pour la page auth
+    # CSS
     st.markdown(f"""
     <style>
         /* Container principal */
@@ -69,34 +80,7 @@ def render_auth():
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }}
         
-        /* Tabs custom */
-        .auth-tabs {{
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid {theme['border']};
-        }}
-        
-        .auth-tab {{
-            flex: 1;
-            text-align: center;
-            padding: 1rem;
-            font-size: 15px;
-            font-weight: 600;
-            color: {theme['text_secondary']};
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
-            background: none;
-            border: none;
-        }}
-        
-        .auth-tab.active {{
-            color: {theme['accent']};
-            border-bottom-color: {theme['accent']};
-        }}
-        
-        /* Override Streamlit input styles */
+        /* Override Streamlit styles */
         .stTextInput > div > div > input {{
             border-radius: 8px !important;
             border: 1px solid {theme['border']} !important;
@@ -109,7 +93,6 @@ def render_auth():
             box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1) !important;
         }}
         
-        /* Labels */
         .stTextInput > label {{
             font-size: 13px !important;
             font-weight: 600 !important;
@@ -135,24 +118,6 @@ def render_auth():
             box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3) !important;
         }}
         
-        /* Divider */
-        .auth-divider {{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            color: {theme['text_secondary']};
-            font-size: 13px;
-        }}
-        
-        .auth-divider::before,
-        .auth-divider::after {{
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: {theme['border']};
-        }}
-        
         /* Footer */
         .auth-footer {{
             text-align: center;
@@ -174,29 +139,6 @@ def render_auth():
         
         .auth-footer-link:hover {{
             text-decoration: underline;
-        }}
-        
-        /* Validation message */
-        .validation-message {{
-            font-size: 12px;
-            margin-top: 0.25rem;
-            padding: 0.5rem;
-            border-radius: 6px;
-        }}
-        
-        .validation-error {{
-            color: #EF4444;
-            background: rgba(239, 68, 68, 0.1);
-        }}
-        
-        .validation-success {{
-            color: #22C55E;
-            background: rgba(34, 197, 94, 0.1);
-        }}
-        
-        /* Checkbox */
-        .stCheckbox {{
-            font-size: 13px !important;
         }}
     </style>
     """, unsafe_allow_html=True)
@@ -286,10 +228,17 @@ def render_login_form(theme):
 
 
 def render_register_form(theme):
-    """Formulaire de registration"""
+    """Formulaire de registration avec détection student"""
     
     st.markdown("### 🚀 Create Account")
     st.caption("Join thousands of smart investors")
+    
+    # Afficher info student/academic
+    st.info("""
+    🎓 **Students & Academics**
+    
+    Use your `.edu` or `.ac.*` email to get **free premium access**!
+    """)
     
     with st.form("register_form", clear_on_submit=False):
         col1, col2 = st.columns(2)
@@ -317,9 +266,13 @@ def render_register_form(theme):
         
         email = st.text_input(
             "Email Address",
-            placeholder="john.doe@example.com",
+            placeholder="john.doe@example.com or john@university.edu",
             key="reg_email"
         )
+        
+        # Détecter email éducatif en temps réel
+        if email and is_educational_email(email):
+            st.success("🎓 Student/Academic email detected! You'll get free premium access.")
         
         password = st.text_input(
             "Password",
@@ -341,12 +294,19 @@ def render_register_form(theme):
             key="reg_terms"
         )
         
+        # Option newsletter
+        newsletter = st.checkbox(
+            "Send me tips, trends, and updates (optional)",
+            value=True,
+            key="reg_newsletter"
+        )
+        
         submitted = st.form_submit_button("Create Account", use_container_width=True)
         
         if submitted:
             handle_register(
                 username, email, password, confirm_password,
-                first_name, last_name, terms
+                first_name, last_name, terms, newsletter
             )
 
 
@@ -368,17 +328,39 @@ def handle_login(username, password, remember_me):
         st.session_state.user_email = user['email']
         st.session_state.user_initial = user['username'][0].upper()
         
-        # Préférences utilisateur
+        # Nouvelles infos license
+        st.session_state.license_type = user.get('license_type', 'free')
+        st.session_state.subscription_status = user.get('subscription', {}).get('status', 'active')
+        
+        # Préférences
         if 'preferences' in user:
             prefs = user['preferences']
             if 'theme' in prefs:
                 st.session_state.theme = prefs['theme']
         
-        # Success message
-        st.success(f"✅ Welcome back, {user['username']}!")
+        # Message de bienvenue avec license info
+        license_type = user.get('license_type', 'free')
         
-        # Petit délai pour voir le message
-        import time
+        if license_type == 'student':
+            st.success(f"✅ Welcome back, {user['username']}! 🎓 (Student License)")
+        elif license_type == 'academic':
+            st.success(f"✅ Welcome back, {user['username']}! 👨‍🏫 (Academic License)")
+        elif license_type in ['individual', 'professional']:
+            st.success(f"✅ Welcome back, {user['username']}! 💼 ({license_type.title()})")
+        else:
+            st.success(f"✅ Welcome back, {user['username']}!")
+        
+        # Check subscription expiration
+        subscription = user.get('subscription', {})
+        if subscription.get('status') == 'trial':
+            trial_ends = subscription.get('trial_ends_at')
+            if trial_ends:
+                import datetime
+                days_left = (trial_ends - datetime.datetime.utcnow()).days
+                if days_left > 0:
+                    st.info(f"⏰ Trial: {days_left} days remaining")
+        
+        # Délai pour voir le message
         time.sleep(1)
         
         # Rediriger vers dashboard
@@ -391,8 +373,8 @@ def handle_login(username, password, remember_me):
 
 
 def handle_register(username, email, password, confirm_password, 
-                    first_name, last_name, terms):
-    """Gère la registration"""
+                    first_name, last_name, terms, newsletter):
+    """Gère la registration avec auto-détection student"""
     
     # Validation basique
     errors = []
@@ -429,22 +411,53 @@ def handle_register(username, email, password, confirm_password,
             st.error(f"⚠️ {error}")
         return
     
+    # Détecter license type
+    license_type = 'free'
+    if is_educational_email(email):
+        license_type = 'student'
+    
     # Créer l'utilisateur
     user_id = create_user(
         username=username,
         email=email,
         password=password,
         first_name=first_name,
-        last_name=last_name
+        last_name=last_name,
+        license_type=license_type,
+        marketing_emails=newsletter
     )
     
     if user_id:
-        st.success("✅ Account created successfully!")
-        st.info("🎉 Welcome to ΦManager! You can now login.")
+        # Message de succès adapté au license type
+        if license_type == 'student':
+            st.success("✅ Account created successfully!")
+            st.balloons()
+            st.success("""
+            🎓 **Student License Activated!**
+            
+            You have free access to all premium features:
+            - ✨ Unlimited portfolios
+            - 🤖 AI Assistant unlimited
+            - 📊 All ML/RL models
+            - 🧪 Experiments Lab
+            
+            Valid for 1 year (renewable annually with verification)
+            """)
+        else:
+            st.success("✅ Account created successfully!")
+            st.info("""
+            🎉 Welcome to ΦManager!
+            
+            You can now login and start with:
+            - 1 free portfolio
+            - 10 AI queries/day
+            - Basic analytics
+            
+            💎 Upgrade anytime for unlimited access!
+            """)
         
         # Auto-switch to login tab
-        import time
-        time.sleep(2)
+        time.sleep(3)
         st.session_state.auth_tab = 'login'
         st.rerun()
     

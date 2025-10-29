@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 PyManager Database - MongoDB Multi-User
-Gestion complète: Users, Portfolios, Watchlists, Alerts, Transactions
+database/tasks
 """
 
 import datetime

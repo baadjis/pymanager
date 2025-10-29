@@ -232,7 +232,14 @@ MCP_SERVER_PORT=8000
 pymanager/
 │
 ├── app3.py                      # 🎯 Point d'entrée principal
-├── database.py                  # 💾 MongoDB Multi-User + Auth
+├── database/   
+|    ├──  __init__.py                # 💾 MongoDB Multi-User + Auth
+|    ├── database.py 
+|    ├── portfolios.py
+|    ├── tasks.py
+|    ├── user.py
+|    ├── transaction.py
+|         
 ├── mcp_server.py               # 🤖 MCP Server (AI Assistant)
 ├── test_mcp.py                 # 🧪 Tests automatiques MCP
 │
@@ -251,29 +258,33 @@ pymanager/
 │
 ├── pagess/                      # 📄 Modules des pages
 │   ├── __init__.py
-│   ├── auth.py                 # 🔐 Authentification
+│   ├── auth.py                 # 🔐 Authentification     
+|   ├── pricing.py             
 │   ├── dashboard.py            # 🏠 Dashboard
-│   ├── portfolio_manager.py    # 💼 Portfolio Manager
-│   │
-│   ├── portfolio_builder.py    # 🏗️ Construction portfolios
-│   ├── portfolio_helpers.py    # 🔧 Helpers portfolio
-│   │
-│   ├── ml_portfolio.py         # 🤖 ML core (PCA, ICA, HRP)
-│   ├── ml_portfolio_builder.py # 🏗️ ML UI builder
-│   ├── ml_rl_training.py       # 🎓 ML/RL training UI
-│   │
-│   ├── rl_portfolio_simple.py  # 🎮 RL core (REINFORCE, AC)
-│   ├── rl_portfolio_builder.py # 🏗️ RL UI builder
-│   │
-│   ├── bl_portfolio.py         # 📊 Black-Litterman core
-│   ├── bl_portfolio_builder.py # 🏗️ BL UI builder
-│   │
-│   ├── experiments_tab.py      # 🧪 Experiments (backtesting)
-│   ├── backtesting.py          # ⏮️ Backtesting engine
-│   │
-│   ├── market.py               # 📈 Market Explorer
-│   ├── screener.py             # 🔍 Stock Screener
-│   └── ai_assistant.py         # 🤖 AI Assistant
+│   ├── portfolio_manager/      # 💼 Portfolio Manager
+|   |    ├── portfolio_manager.py 
+│   │    |
+│   |    ├── portfolio_builder.py    # 🏗️ Construction portfolios
+│   |    ├── portfolio_helpers.py    # 🔧 Helpers portfolio
+│   │    |
+│   |    ├── ml_portfolio.py         # 🤖 ML core (PCA, ICA, HRP)
+│   |    ├── ml_portfolio_builder.py # 🏗️ ML UI builder
+│   |    ├── ml_rl_training.py       # 🎓 ML/RL training UI
+│   │    |
+│   |    ├── rl_portfolio_simple.py  # 🎮 RL core (REINFORCE, AC)
+│   |    ├── rl_portfolio_builder.py # 🏗️ RL UI builder
+│   │    |
+│   |    ├── bl_portfolio.py         # 📊 Black-Litterman core
+│   |    ├── bl_portfolio_builder.py # 🏗️ BL UI builder
+│   │    |
+│   |    ├── experiments_tab.py      # 🧪 Experiments (backtesting)
+│   |    ├── backtesting.py          # ⏮️ Backtesting engine
+│   ├──market/
+|   |  ├── __init__.py
+│   |  ├── market.py               # 📈 Market Explorer
+│   |  ├── screener.py  
+|   |  ├── explorer.py # 🔍 Stock Screener
+│   └── ai_assistant.py             # 🤖 AI Assistant
 │
 ├── .streamlit/
 │   ├── config.toml             # ⚙️ Config Streamlit
@@ -665,13 +676,7 @@ Consultez la documentation complète : `docs/README_AI_ASSISTANT.md`
 - **[Streamlit API](https://docs.streamlit.io/)** - Documentation Streamlit
 - **[Claude API](https://docs.anthropic.com/)** - Documentation Anthropic
 
-### Tutoriels
 
-- [ ] Vidéo: Installation complète
-- [ ] Vidéo: Créer son premier portfolio
-- [ ] Vidéo: Utiliser l'AI Assistant
-- [ ] Vidéo: Backtesting avancé
-- [ ] Vidéo: Déploiement production
 
 ---
 
@@ -681,7 +686,7 @@ Consultez la documentation complète : `docs/README_AI_ASSISTANT.md`
 - Dashboard complet
 - Portfolio Manager (10+ modèles)
 - Market Explorer
-- Stock Screener
+- Screener
 - AI Assistant avec MCP
 - Experiments Lab
 - Auth multi-utilisateurs
@@ -1078,8 +1083,7 @@ Aimez PyManager ? Supportez le projet !
 - 🐛 **Reportez des bugs** pour améliorer la qualité
 - 📖 **Contribuez à la documentation**
 - 💻 **Contribuez au code**
-- ☕ **Buy me a coffee** (lien à venir)
-- 💰 **Sponsoring GitHub** (à activer)
+
 
 ---
 
@@ -1205,9 +1209,7 @@ Nous espérons que cette plateforme vous aidera à :
 
 ![Phi Symbol](https://via.placeholder.com/100x100/6366f1/ffffff?text=Φ)
 
-**The Golden Ratio of Portfolio Management**
 
-Made with ❤️ and ☕ by the community
 
 [⭐ Star](https://github.com/baadjis/pymanager) • [🍴 Fork](https://github.com/baadjis/pymanager/fork) • [📖 Docs](docs/) • [💬 Chat](https://github.com/baadjis/pymanager/discussions)
 

@@ -15,6 +15,8 @@ from uiconfig import get_theme_colors, apply_plotly_theme, format_number
 from dataprovider import yahoo
 from database import get_watchlist
 from .auth import render_auth
+from utils import calculate_portfolio_current_value, format_pnl
+
 user_id=''
 try :
   user_id = st.session_state.user_id
@@ -81,14 +83,20 @@ def render_kpi_section(theme):
     """Section KPI avec 4 cartes principales"""
     
     # Calculer les métriques
+    
     try:
         portfolios = list(get_portfolios(user_id=user_id))
-        total_value = sum([p.get('total_amount', 0) for p in portfolios])
+        total_value=0.0
+        total_pnl=0.0
+        for portfolio in portfolios:
+             current_value, pnl, _ = calculate_portfolio_current_value(portfolio)
+             total_value += current_value
+             total_pnl+=pnl
         num_portfolios = len(portfolios)
     except:
         total_value = 125430.50
         num_portfolios = 3
-    
+        total_pnl=9.234
     cash = 15230.75
     performance_pct = 12.34
     performance_value = 13658.92
@@ -97,7 +105,7 @@ def render_kpi_section(theme):
     
     with col1:
         render_kpi_card("Assets Under Management", format_number(total_value, 'currency', 0), 
-                       8.5, "+$9,234", "💼", theme['primary_color'], theme)
+                       8.5, f"+${total_pnl:.3f}", "💼", theme['primary_color'], theme)
     
     with col2:
         render_kpi_card("Cash Available", format_number(cash, 'currency', 2), 
@@ -250,9 +258,10 @@ def render_portfolios_overview(theme):
     
     for idx, portfolio in enumerate(portfolios[:5]):
         name = portfolio.get('name', f'Portfolio {idx+1}')
-        value = portfolio.get('total_amount', 0)
-        change = portfolio.get('change', 0)
-        holdings = portfolio.get('holdings', 0)
+        value, _, change = calculate_portfolio_current_value(portfolio)
+        #value = portfolio.get('total_amount', 0)
+        #change = portfolio.get('total_pnl_pct', 0)
+        holdings = len(portfolio.get('assets', []))
         
         change_color = theme['success_color'] if change >= 0 else theme['danger_color']
         arrow = "↑" if change >= 0 else "↓"
