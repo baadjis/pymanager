@@ -1,35 +1,28 @@
 # pages/dashboard.py
 """
-Dashboard - Vue d'ensemble complète et moderne
-AUM, Cash, Portfolios, Watchlist, Market Overview, Performance
-Optimisé sans espaces vides et alignement parfait
+Dashboard V2 - Structure holdings[]
+✅ Utilise get_portfolio_summary() unifié
+✅ Compatible ancienne ET nouvelle structure
 """
 
 import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from datetime import datetime, timedelta
+from datetime import datetime
 from uiconfig import get_theme_colors, apply_plotly_theme, format_number
 from dataprovider import yahoo
-from database import get_watchlist
+from database import get_watchlist, get_portfolios
 from .auth import render_auth
-from utils import calculate_portfolio_current_value, format_pnl
+from utils import get_portfolio_summary
 
-user_id=''
-try :
-  user_id = st.session_state.user_id
-except:
-  
-  render_auth()
-  st.stop()
-
+# Auth check
+user_id = ''
 try:
-    from database import get_portfolios
+    user_id = st.session_state.user_id
 except:
-    def get_portfolios(user_id):
-        return []
+    render_auth()
+    st.stop()
 
 
 def render_dashboard():
@@ -54,24 +47,24 @@ def render_dashboard():
     </div>
     """)
     
-    # Section 1: KPI Cards (4 colonnes)
+    # Section 1: KPI Cards
     render_kpi_section(theme)
     
-    # Section 2: Row 1 - Performance Chart + Allocation (ratio 2:1)
+    # Section 2: Performance + Allocation
     col1, col2 = st.columns([2, 1], gap="medium")
     with col1:
         render_portfolio_performance_chart(theme)
     with col2:
         render_allocation_chart(theme)
     
-    # Section 3: Row 2 - Portfolios + Watchlist (ratio 1:1)
+    # Section 3: Portfolios + Watchlist
     col1, col2 = st.columns(2, gap="medium")
     with col1:
         render_portfolios_overview(theme)
     with col2:
         render_watchlist_overview(theme)
     
-    # Section 4: Row 3 - Market Overview + Recent Activity (ratio 1:1)
+    # Section 4: Market + Activity
     col1, col2 = st.columns(2, gap="medium")
     with col1:
         render_market_overview(theme)
@@ -80,48 +73,79 @@ def render_dashboard():
 
 
 def render_kpi_section(theme):
-    """Section KPI avec 4 cartes principales"""
+    """Section KPI - ✅ Utilise get_portfolio_summary()"""
     
-    # Calculer les métriques
+    portfolios = []
+    total_initial = 0.0
+    total_current = 0.0
+    num_portfolios = 0
     
     try:
         portfolios = list(get_portfolios(user_id=user_id))
-        total_value=0.0
-        total_pnl=0.0
-        for portfolio in portfolios:
-             current_value, pnl, _ = calculate_portfolio_current_value(portfolio)
-             total_value += current_value
-             total_pnl+=pnl
         num_portfolios = len(portfolios)
-    except:
-        total_value = 125430.50
-        num_portfolios = 3
-        total_pnl=9.234
+        
+        for portfolio in portfolios:
+            summary = get_portfolio_summary(portfolio)
+            total_initial += summary['initial_amount']
+            total_current += summary['current_value']
+        
+    except Exception as e:
+        st.error(f"Erreur chargement portfolios: {e}")
+    
+    total_pnl = total_current - total_initial
+    total_pnl_pct = (total_pnl / total_initial * 100) if total_initial > 0 else 0.0
     cash = 15230.75
-    performance_pct = 12.34
-    performance_value = 13658.92
     
     col1, col2, col3, col4 = st.columns(4, gap="small")
     
     with col1:
-        render_kpi_card("Assets Under Management", format_number(total_value, 'currency', 0), 
-                       8.5, f"+${total_pnl:.3f}", "💼", theme['primary_color'], theme)
+        render_kpi_card(
+            "Assets Under Management", 
+            format_number(total_current, 'currency', 0), 
+            total_pnl_pct, 
+            f"${total_pnl:+,.2f}", 
+            "💼", 
+            theme['primary_color'], 
+            theme
+        )
     
     with col2:
-        render_kpi_card("Cash Available", format_number(cash, 'currency', 2), 
-                       2.1, "+$312", "💵", theme['success_color'], theme)
+        render_kpi_card(
+            "Cash Available", 
+            format_number(cash, 'currency', 2), 
+            2.1, 
+            "+$312", 
+            "💵", 
+            theme['success_color'], 
+            theme
+        )
     
     with col3:
-        render_kpi_card("Total Return", format_number(performance_value, 'currency', 2), 
-                       performance_pct, f"+{performance_pct:.2f}%", "📈", theme['info_color'], theme)
+        render_kpi_card(
+            "Total Return", 
+            format_number(total_pnl, 'currency', 2), 
+            total_pnl_pct, 
+            f"{total_pnl_pct:+.2f}%", 
+            "📈", 
+            theme['info_color'], 
+            theme
+        )
     
     with col4:
-        render_kpi_card("Active Portfolios", str(num_portfolios), 
-                       0, "View All →", "🗂️", theme['warning_color'], theme, is_count=True)
+        render_kpi_card(
+            "Active Portfolios", 
+            str(num_portfolios), 
+            0, 
+            "View All →", 
+            "🗂️", 
+            theme['warning_color'], 
+            theme, 
+            is_count=True
+        )
 
 
 def render_kpi_card(title, value, change_pct, change_value, icon, color, theme, is_count=False):
-    """Render une carte KPI compacte"""
+    """Render une carte KPI"""
     
     change_color = theme['success_color'] if change_pct >= 0 else theme['danger_color']
     arrow = "↑" if change_pct >= 0 else "↓"
@@ -167,9 +191,95 @@ def render_kpi_card(title, value, change_pct, change_value, icon, color, theme, 
     """)
 
 
-def render_portfolio_performance_chart(theme):
-    """Graphique de performance compact"""
+def render_portfolios_overview(theme):
+    """Portfolios overview - ✅ Utilise get_portfolio_summary()"""
     
+    st.html(f"""
+    <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
+                margin-bottom: 0.75rem;">
+        💼 Your Portfolios
+    </div>
+    """)
+    
+    try:
+        portfolios = list(get_portfolios(user_id=user_id))
+    except Exception as e:
+        st.error(f"Erreur chargement portfolios: {e}")
+        portfolios = []
+    
+    if not portfolios:
+        st.info("No portfolios yet. Create one!")
+        if st.button("➕ Create Portfolio", use_container_width=True, key="create_pf_btn"):
+            st.session_state.current_page = 'Portfolio'
+            st.rerun()
+        return
+    
+    container_html = f'<div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">'
+    
+    for idx, portfolio in enumerate(portfolios[:5]):
+        # ✅ CALCUL UNIFIÉ
+        summary = get_portfolio_summary(portfolio)
+        
+        name = summary['name']
+        current_value = summary['current_value']
+        pnl = summary['pnl']
+        pnl_pct = summary['pnl_pct']
+        holdings = summary['num_holdings']
+        initial_amount = summary['initial_amount']
+        
+        change_color = theme['success_color'] if pnl >= 0 else theme['danger_color']
+        arrow = "↑" if pnl >= 0 else "↓"
+        
+        debug_info = f"Initial: ${initial_amount:.2f} | Current: ${current_value:.2f} | PnL: ${pnl:+.2f}"
+        
+        container_html += f"""
+        <div style="
+            background: {theme['bg_card']}; border: 1px solid {theme['border']};
+            border-radius: 8px; padding: 0.85rem; margin-bottom: 0.6rem;
+            transition: all 0.2s ease; cursor: pointer;
+        "
+        onmouseover="this.style.borderColor='{theme['border_hover']}';"
+        onmouseout="this.style.borderColor='{theme['border']}';"
+        title="{debug_info}"
+        >
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: {theme['text_primary']}; 
+                                font-size: 0.95rem; margin-bottom: 0.2rem;">
+                        {name}
+                    </div>
+                    <div style="font-size: 0.7rem; color: {theme['text_secondary']};">
+                        {holdings} holdings • Init: ${initial_amount:.0f}
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-weight: 700; color: {theme['text_primary']}; 
+                                font-size: 1rem; margin-bottom: 0.2rem;">
+                        ${current_value:,.0f}
+                    </div>
+                    <div style="display: inline-block; padding: 0.15rem 0.4rem;
+                                background: {'rgba(16, 185, 129, 0.1)' if pnl >= 0 else 'rgba(239, 68, 68, 0.1)'};
+                                color: {change_color}; border-radius: 3px; 
+                                font-size: 0.7rem; font-weight: 600;">
+                        {arrow} ${abs(pnl):.2f} ({abs(pnl_pct):.2f}%)
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+    
+    container_html += "</div>"
+    st.html(container_html)
+    
+    if len(portfolios) > 5:
+        if st.button("📂 View All Portfolios", use_container_width=True, key="view_all_pf"):
+            st.session_state.current_page = 'Portfolio'
+            st.rerun()
+
+
+# Les autres fonctions restent identiques...
+def render_portfolio_performance_chart(theme):
+    """Graphique de performance"""
     st.html(f"""
     <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
                 margin-bottom: 0.75rem;">
@@ -182,7 +292,6 @@ def render_portfolio_performance_chart(theme):
     values = base + np.cumsum(np.random.randn(30) * 500)
     
     fig = go.Figure()
-    
     fig.add_trace(go.Scatter(
         x=dates, y=values, mode='lines', name='Portfolio Value',
         line=dict(color=theme['primary_color'], width=2.5),
@@ -194,13 +303,11 @@ def render_portfolio_performance_chart(theme):
                   opacity=0.4, annotation_text="Initial", annotation_position="right")
     
     apply_plotly_theme(fig, title="", xaxis_title="", yaxis_title="Value ($)", height=280)
-    
     st.plotly_chart(fig, use_container_width=True, key="perf_chart")
 
 
 def render_allocation_chart(theme):
-    """Graphique d'allocation compact"""
-    
+    """Graphique d'allocation"""
     st.html(f"""
     <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
                 margin-bottom: 0.75rem;">
@@ -225,94 +332,8 @@ def render_allocation_chart(theme):
     st.plotly_chart(fig, use_container_width=True, key="alloc_chart")
 
 
-def render_portfolios_overview(theme):
-    """Portfolios overview compact"""
-    
-    st.html(f"""
-    <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
-                margin-bottom: 0.75rem;">
-        💼 Your Portfolios
-    </div>
-    """)
-    
-    try:
-        portfolios = list(get_portfolios(user_id=user_id))
-    except:
-        portfolios = [
-            {'name': 'Growth Portfolio', 'amount': 65000, 'change': 8.2, 'holdings': 12},
-            {'name': 'Income Portfolio', 'amount': 45000, 'change': 3.5, 'holdings': 8},
-            {'name': 'Tech Portfolio', 'amount': 15430, 'change': 15.7, 'holdings': 5}
-        ]
-    
-    if not portfolios:
-        st.info("No portfolios yet. Create one!")
-        if st.button("➕ Create Portfolio", use_container_width=True):
-            st.session_state.current_page = 'Portfolio'
-            st.rerun()
-        return
-    
-    # Container avec scroll
-    container_html = f"""
-    <div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">
-    """
-    
-    for idx, portfolio in enumerate(portfolios[:5]):
-        name = portfolio.get('name', f'Portfolio {idx+1}')
-        value, _, change = calculate_portfolio_current_value(portfolio)
-        #value = portfolio.get('total_amount', 0)
-        #change = portfolio.get('total_pnl_pct', 0)
-        holdings = len(portfolio.get('assets', []))
-        
-        change_color = theme['success_color'] if change >= 0 else theme['danger_color']
-        arrow = "↑" if change >= 0 else "↓"
-        
-        container_html += f"""
-        <div style="
-            background: {theme['bg_card']}; border: 1px solid {theme['border']};
-            border-radius: 8px; padding: 0.85rem; margin-bottom: 0.6rem;
-            transition: all 0.2s ease;
-        "
-        onmouseover="this.style.borderColor='{theme['border_hover']}';"
-        onmouseout="this.style.borderColor='{theme['border']}';"
-        >
-            <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div style="flex: 1;">
-                    <div style="font-weight: 600; color: {theme['text_primary']}; 
-                                font-size: 0.95rem; margin-bottom: 0.2rem;">
-                        {name}
-                    </div>
-                    <div style="font-size: 0.7rem; color: {theme['text_secondary']};">
-                        {holdings} holdings
-                    </div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="font-weight: 700; color: {theme['text_primary']}; 
-                                font-size: 1rem; margin-bottom: 0.2rem;">
-                        ${value:,.0f}
-                    </div>
-                    <div style="display: inline-block; padding: 0.15rem 0.4rem;
-                                background: {'rgba(16, 185, 129, 0.1)' if change >= 0 else 'rgba(239, 68, 68, 0.1)'};
-                                color: {change_color}; border-radius: 3px; 
-                                font-size: 0.7rem; font-weight: 600;">
-                        {arrow} {abs(change):.2f}%
-                    </div>
-                </div>
-            </div>
-        </div>
-        """
-    
-    container_html += "</div>"
-    st.html(container_html)
-    
-    if len(portfolios) > 5:
-        if st.button("📂 View All Portfolios", use_container_width=True, key="view_all_pf"):
-            st.session_state.current_page = 'Portfolio'
-            st.rerun()
-
-
 def render_watchlist_overview(theme):
-    """Watchlist overview compact avec sparklines"""
-    
+    """Watchlist"""
     st.html(f"""
     <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
                 margin-bottom: 0.75rem;">
@@ -320,9 +341,10 @@ def render_watchlist_overview(theme):
     </div>
     """)
     
-    #watchlist = st.session_state.get('watchlist', ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'])
-    #portfolios = get_portfolios(user_id=user_id)
-    watchlist = get_watchlist(user_id=user_id)
+    try:
+        watchlist = get_watchlist(user_id=user_id)
+    except:
+        watchlist = []
     
     if not watchlist:
         st.info("Your watchlist is empty!")
@@ -331,10 +353,7 @@ def render_watchlist_overview(theme):
             st.rerun()
         return
     
-    # Container avec scroll
-    container_html = f"""
-    <div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">
-    """
+    container_html = f'<div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">'
     
     for ticker in watchlist[:5]:
         try:
@@ -352,27 +371,16 @@ def render_watchlist_overview(theme):
                 sparkline = create_mini_sparkline_svg(prices, change_pct >= 0, theme)
                 
                 container_html += f"""
-                <div style="
-                    background: {theme['bg_card']}; border: 1px solid {theme['border']};
-                    border-radius: 8px; padding: 0.85rem; margin-bottom: 0.6rem;
-                ">
-                    <div style="display: flex; justify-content: space-between; 
-                                align-items: center; margin-bottom: 0.4rem;">
-                        <div style="font-weight: 700; color: {theme['text_primary']}; font-size: 0.95rem;">
-                            {ticker}
-                        </div>
+                <div style="background: {theme['bg_card']}; border: 1px solid {theme['border']};
+                            border-radius: 8px; padding: 0.85rem; margin-bottom: 0.6rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <div style="font-weight: 700; color: {theme['text_primary']}; font-size: 0.95rem;">{ticker}</div>
                         <div style="text-align: right;">
-                            <div style="font-weight: 700; color: {theme['text_primary']}; font-size: 0.95rem;">
-                                ${current:.2f}
-                            </div>
-                            <div style="color: {change_color}; font-size: 0.7rem; font-weight: 600;">
-                                {arrow} {abs(change_pct):.2f}%
-                            </div>
+                            <div style="font-weight: 700; color: {theme['text_primary']}; font-size: 0.95rem;">${current:.2f}</div>
+                            <div style="color: {change_color}; font-size: 0.7rem; font-weight: 600; background: {'rgba(16, 185, 129, 0.1)' if change_pct >= 0 else 'rgba(239, 68, 68, 0.1)'};">{arrow} {abs(change_pct):.2f}%</div>
                         </div>
                     </div>
-                    <div style="height: 35px;">
-                        {sparkline}
-                    </div>
+                    <div style="height: 35px;">{sparkline}</div>
                 </div>
                 """
         except:
@@ -380,16 +388,10 @@ def render_watchlist_overview(theme):
     
     container_html += "</div>"
     st.html(container_html)
-    
-    if len(watchlist) > 5:
-        if st.button("📋 View Full Watchlist", use_container_width=True, key="view_watch"):
-            st.session_state.current_page = 'Market'
-            st.rerun()
 
 
 def render_market_overview(theme):
-    """Market overview compact"""
-    
+    """Market overview"""
     st.html(f"""
     <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
                 margin-bottom: 0.75rem;">
@@ -399,9 +401,7 @@ def render_market_overview(theme):
     
     indices = {'^GSPC': 'S&P 500', '^DJI': 'Dow Jones', '^IXIC': 'NASDAQ', '^RUT': 'Russell 2000'}
     
-    container_html = f"""
-    <div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">
-    """
+    container_html = f'<div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">'
     
     for ticker, name in indices.items():
         try:
@@ -412,27 +412,21 @@ def render_market_overview(theme):
                 prev = float(data['Close'].iloc[-2])
                 change_pct = ((current - prev) / prev) * 100
                 
-                change_color = theme['success_color'] if change_pct >= 0 else theme['danger_color']
+                change_color = 'green' if change_pct >= 0 else 'red'
                 arrow = "↑" if change_pct >= 0 else "↓"
-                
+                	
                 container_html += f"""
                 <div style="display: flex; justify-content: space-between; align-items: center;
                             padding: 0.75rem; margin-bottom: 0.5rem;
                             background: {theme['bg_card']}; border: 1px solid {theme['border']};
                             border-radius: 8px;">
                     <div>
-                        <div style="font-weight: 600; color: {theme['text_primary']}; font-size: 0.9rem;">
-                            {name}
-                        </div>
+                        <div style="font-weight: 600; color: {theme['text_primary']}; font-size: 0.9rem;">{name}</div>
                         <div style="font-size: 0.7rem; color: {theme['text_secondary']};">{ticker}</div>
                     </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 600; color: {theme['text_primary']}; font-size: 0.9rem;">
-                            {current:,.2f}
-                        </div>
-                        <div style="color: {change_color}; font-size: 0.75rem; font-weight: 600;">
-                            {arrow} {abs(change_pct):.2f}%
-                        </div>
+                    <div style="text-align: right; ">
+                        <div style="font-weight: 600; color: {theme['text_primary']}; font-size: 0.9rem;">{current:,.2f}</div>
+                        <div style="color: {change_color}; font-size: 0.75rem; font-weight: 600; background: {'rgba(16, 185, 129, 0.1)' if change_pct >= 0 else 'rgba(239, 68, 68, 0.1)'}; ">{arrow} {abs(change_pct):.2f}%</div>
                     </div>
                 </div>
                 """
@@ -441,15 +435,10 @@ def render_market_overview(theme):
     
     container_html += "</div>"
     st.html(container_html)
-    
-    if st.button("📊 View Full Market", use_container_width=True, key="view_market"):
-        st.session_state.current_page = 'Market'
-        st.rerun()
 
 
 def render_recent_activity(theme):
-    """Recent activity compact"""
-    
+    """Recent activity"""
     st.html(f"""
     <div style="font-size: 1.1rem; font-weight: 600; color: {theme['text_primary']}; 
                 margin-bottom: 0.75rem;">
@@ -461,43 +450,33 @@ def render_recent_activity(theme):
         {'type': 'buy', 'ticker': 'AAPL', 'action': 'Bought', 'shares': 10, 'price': 178.50, 'time': '2h ago'},
         {'type': 'sell', 'ticker': 'TSLA', 'action': 'Sold', 'shares': 5, 'price': 245.30, 'time': '5h ago'},
         {'type': 'dividend', 'ticker': 'MSFT', 'action': 'Dividend', 'amount': 25.50, 'time': '1d ago'},
-        {'type': 'buy', 'ticker': 'GOOGL', 'action': 'Bought', 'shares': 8, 'price': 142.15, 'time': '2d ago'},
-        {'type': 'alert', 'ticker': 'NVDA', 'action': 'Price Alert', 'message': 'Target reached', 'time': '3d ago'}
     ]
     
-    icon_map = {'buy': '🟢', 'sell': '🔴', 'dividend': '💵', 'alert': '🔔'}
+    icon_map = {'buy': '🟢', 'sell': '🔴', 'dividend': '💵'}
     
-    container_html = f"""
-    <div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">
-    """
+    container_html = f'<div style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">'
     
     for activity in activities:
         icon = icon_map.get(activity['type'], '📌')
         
         if activity['type'] in ['buy', 'sell']:
             detail = f"{activity['shares']} shares @ ${activity['price']:.2f}"
-        elif activity['type'] == 'dividend':
-            detail = f"${activity['amount']:.2f}"
         else:
-            detail = activity.get('message', '')
+            detail = f"${activity['amount']:.2f}"
         
         container_html += f"""
         <div style="display: flex; gap: 0.75rem; padding: 0.75rem; margin-bottom: 0.5rem;
                     background: {theme['bg_card']}; border: 1px solid {theme['border']};
                     border-radius: 8px;">
             <div style="font-size: 1.2rem; flex-shrink: 0;">{icon}</div>
-            <div style="flex: 1; min-width: 0;">
+            <div style="flex: 1;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.15rem;">
                     <span style="font-weight: 600; color: {theme['text_primary']}; font-size: 0.85rem;">
                         {activity['action']} {activity['ticker']}
                     </span>
-                    <span style="font-size: 0.7rem; color: {theme['text_secondary']}; white-space: nowrap;">
-                        {activity['time']}
-                    </span>
+                    <span style="font-size: 0.7rem; color: {theme['text_secondary']};">{activity['time']}</span>
                 </div>
-                <div style="font-size: 0.75rem; color: {theme['text_secondary']};">
-                    {detail}
-                </div>
+                <div style="font-size: 0.75rem; color: {theme['text_secondary']};">{detail}</div>
             </div>
         </div>
         """
@@ -507,12 +486,11 @@ def render_recent_activity(theme):
 
 
 def create_mini_sparkline_svg(data, is_positive, theme):
-    """Crée une mini sparkline SVG optimisée"""
+    """Sparkline SVG"""
     if len(data) < 2:
         return ""
     
-    min_val = np.min(data)
-    max_val = np.max(data)
+    min_val, max_val = np.min(data), np.max(data)
     
     if max_val == min_val:
         normalized = np.full_like(data, 17.5)
@@ -525,9 +503,4 @@ def create_mini_sparkline_svg(data, is_positive, theme):
     
     color = theme['success_color'] if is_positive else theme['danger_color']
     
-    return f"""
-    <svg width="100%" height="35" style="display: block;">
-        <polyline points="{points}" fill="none" stroke="{color}" 
-                  stroke-width="2" opacity="0.8"/>
-    </svg>
-    """
+    return f'<svg width="100%" height="35"><polyline points="{points}" fill="none" stroke="{color}" stroke-width="2" opacity="0.8"/></svg>'

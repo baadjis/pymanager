@@ -138,7 +138,7 @@ def run_model(model_type, assets, data, returns_df):
     elif model_type == "rl_reinforce":
         try:
             # CORRECTION : Import depuis rl_portfolio_simple.py
-            from .rl_portfolio_simple import get_rl_portfolio_weights
+            from .rl_portfolio import get_rl_portfolio_weights
             weights, _ = get_rl_portfolio_weights(
                 returns_df, 
                 agent_type='reinforce', 
@@ -154,7 +154,7 @@ def run_model(model_type, assets, data, returns_df):
     elif model_type == "rl_ac":
         try:
             # CORRECTION : Import depuis rl_portfolio_simple.py
-            from .rl_portfolio_simple import get_rl_portfolio_weights
+            from .rl_portfolio import get_rl_portfolio_weights
             weights, _ = get_rl_portfolio_weights(
                 returns_df, 
                 agent_type='actor_critic', 
@@ -1265,11 +1265,12 @@ def render_export_results():
             
             st.markdown("---")
             st.markdown("### 📊 Portfolio Preview")
+            holdings=portfolio.get('holdings',[])
             
             preview_df = pd.DataFrame({
-                'Asset': portfolio['assets'],
-                'Weight': [f"{w:.2%}" for w in portfolio['weights']],
-                'Quantity': portfolio.get('quantities', [0] * len(portfolio['assets']))
+                'Asset': [h['symbol'] for h in holdings],
+                'Weight': [f"{h['weight']:.2%}" for h in holdings],
+                'Quantity':  [f"{h['quantity']:.3f}" for h in holdings]
             })
             
             st.dataframe(preview_df, use_container_width=True, hide_index=True)

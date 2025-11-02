@@ -180,11 +180,13 @@ def render_fund_chart_tab(ticker, data, theme):
     data = yahoo.get_ticker_data(ticker, period=period)
     
     if data is not None and not data.empty:
+        data_x=data.index
+        data_y=[t[0] for t in data['Close'].values]
         fig = go.Figure()
         
         fig.add_trace(go.Scatter(
-            x=data.index,
-            y=data['Close'],
+            x=data_x,
+            y=data_y,
             mode='lines',
             name=ticker,
             line=dict(color='#6366F1', width=2),
@@ -219,7 +221,7 @@ def render_fund_overview_tab(ticker, info, theme):
     st.divider()
     
     col1, col2 = st.columns(2)
-    
+    fund_yield=info.get('yield', 0)
     with col1:
         st.markdown("#### 🏦 Fund Details")
         st.markdown(f"**Fund Family:** {info.get('fundFamily', 'N/A')}")
@@ -232,7 +234,7 @@ def render_fund_overview_tab(ticker, info, theme):
         expense_ratio = info.get('annualReportExpenseRatio', 0) * 100 if info.get('annualReportExpenseRatio') else 0
         st.markdown(f"**Expense Ratio:** {expense_ratio:.2f}%")
         st.markdown(f"**Min Investment:** ${info.get('minInvestment', 0):,.0f}")
-        st.markdown(f"**Yield:** {info.get('yield', 0) * 100:.2f}%" if info.get('yield') else "**Yield:** N/A")
+        st.markdown(f"**Yield:** {fund_yield * 100:.2f}%" if fund_yield else "**Yield:** N/A")
 
 
 def render_fund_holdings_tab(ticker, info, theme):
@@ -278,11 +280,11 @@ def render_fund_performance_tab(ticker, data, theme):
     
     with col1:
         perf_1m = ((data['Close'].iloc[-1] / data['Close'].iloc[-21]) - 1) * 100 if len(data) >= 21 else 0
-        st.metric("1 Month", f"{perf_1m:+.2f}%")
+        st.metric("1 Month", f"{perf_1m.values[0]:+.2f}%")
     
     with col2:
         perf_3m = ((data['Close'].iloc[-1] / data['Close'].iloc[-63]) - 1) * 100 if len(data) >= 63 else 0
-        st.metric("3 Months", f"{perf_3m:+.2f}%")
+        st.metric("3 Months", f"{perf_3m.values[0]:+.2f}%")
     
     with col3:
         perf_ytd = calculate_ytd_return(data)

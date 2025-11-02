@@ -61,7 +61,15 @@ Modèles disponibles :
 - **ML/RL Training** - Entraînez vos modèles avec hyperparamètres
 - **Export** - CSV, JSON, PDF (bientôt)
 
-### 📈 Market Explorer
+### 📈 Market 
+
+**Onglet 1: oveview**
+- Vue global du marché
+- indices principaux
+- marché principaux
+
+
+**Onglet 2: explore**
 - Données en temps réel (Yahoo Finance)
 - Graphiques interactifs (Candlestick, Line, Area)
 - Indicateurs techniques (SMA, EMA, RSI, MACD, Bollinger Bands, Volume)
@@ -69,8 +77,9 @@ Modèles disponibles :
 - Informations fondamentales (P/E, Market Cap, Dividendes)
 - Actualités intégrées
 
-### 🔍 Stock Screener
+**Onglet 3: Screen**
 Filtres disponibles :
+- Regions
 - Secteur et industrie
 - Capitalisation boursière (Small/Mid/Large cap)
 - Ratios financiers (P/E, PEG, P/B, Debt/Equity)
@@ -233,15 +242,23 @@ pymanager/
 │
 ├── app3.py                      # 🎯 Point d'entrée principal
 ├── database/   
-|    ├──  __init__.py                # 💾 MongoDB Multi-User + Auth
+|    ├──  __init__.py            # 💾 MongoDB Multi-User + Auth
 |    ├── database.py 
 |    ├── portfolios.py
 |    ├── tasks.py
 |    ├── user.py
 |    ├── transaction.py
 |         
-├── mcp_server.py               # 🤖 MCP Server (AI Assistant)
-├── test_mcp.py                 # 🧪 Tests automatiques MCP
+├── mcp/ 
+|   ├──  __init__.py             # 🤖 MCP Server (AI Assistant)
+|   ├── mcp_server.py  
+|   ├── handlers.py
+|   ├──helpers.py       
+|   ├── test_mcp.py
+├── start_server.py            # 🧪 Tests automatiques MCP
+├── ml/                          # machine learning module
+|   ├──  __init__.py 
+|   ├── timeseries_predictors.py                 
 │
 ├── portfolio.py                 # 📊 Classe Portfolio (core)
 ├── factory.py                   # 🏭 Factory pour créer portfolios
@@ -280,11 +297,16 @@ pymanager/
 │   |    ├── experiments_tab.py      # 🧪 Experiments (backtesting)
 │   |    ├── backtesting.py          # ⏮️ Backtesting engine
 │   ├──market/
-|   |  ├── __init__.py
-│   |  ├── market.py               # 📈 Market Explorer
-│   |  ├── screener.py  
-|   |  ├── explorer.py # 🔍 Stock Screener
-│   └── ai_assistant.py             # 🤖 AI Assistant
+|   |    ├── __init__.py
+│   |    ├── market.py               # 📈 Market Explorer
+│   |    ├── screener.py             # 🔍 Stock Screener
+|   |    ├── explorer.py
+│   └──ai/                         # 🤖 AI Assistant
+|       ├── __init__.py
+|       ├── ai_assistant.py
+|       ├── handlers.py
+|                         
+|                  
 │
 ├── .streamlit/
 │   ├── config.toml             # ⚙️ Config Streamlit

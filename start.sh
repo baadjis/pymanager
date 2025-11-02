@@ -162,7 +162,7 @@ start_mcp_server() {
     
     # Start server
     cd "$PROJECT_DIR"
-    nohup "$PYTHON" mcp_server.py > logs/mcp_server.log 2>&1 &
+    nohup "$PYTHON" start_server.py > logs/mcp_server.log 2>&1 &
     echo $! > "$MCP_PID_FILE"
     
     # Wait for server to be ready
